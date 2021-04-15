@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Fireasy</title>
+    <script src="gojs/go-debug.js"></script>
+    <link rel='stylesheet' href='gojs/extensions/DataInspector.css' />
+    <script src="gojs/extensions/DataInspector.js"></script>
+    <script src="init.js"></script>
+    <script src="Shapes.js"></script>
+    <script src="Templates.js"></script>
+
+</head>
+<body onload="init()">
+
+    <div style="width: 100%; display: flex; justify-content: space-between">
+        <div id="PaletteDiv" style="width: 100px; margin-right: 2px; background-color: #282c34;"></div>
+        <div id="DiagramDiv" style="flex-grow: 1; height: 750px; background-color: white;"></div>
+        <span style="display: inline-block; vertical-align: top; padding: 2px; width:300px">
+            <div id="InspectorDiv" class="inspector"></div>
+        </span>
+    </div>
+
+</body>
+</html>
