@@ -37,7 +37,7 @@ function initializeNodeTemplates() {
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
-                selectionAdornmentTemplate: commandsAdornment
+                selectionAdornmentTemplate: commandsAdornment_IN
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             $(go.Panel, "Auto",
@@ -52,7 +52,7 @@ function initializeNodeTemplates() {
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
-                selectionAdornmentTemplate: commandsAdornment
+                selectionAdornmentTemplate: commandsAdornment_IN
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             $(go.Panel, "Auto",
@@ -67,7 +67,7 @@ function initializeNodeTemplates() {
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
-                selectionAdornmentTemplate: commandsAdornment
+                selectionAdornmentTemplate: commandsAdornment_IN
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             $(go.Panel, "Auto",
@@ -82,8 +82,10 @@ function initializeNodeTemplates() {
             {
                 resizable: false,
                 resizeObjectName: "SHAPE",
-                selectionAdornmentTemplate: commandsAdornment,
-                movable: false
+                selectionAdornmentTemplate: commandsAdornment_OUT,
+                movable: false,
+                fromSpot: go.Spot.RightSide,
+                toSpot: go.Spot.LeftSide
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             $(go.Panel, "Auto",
@@ -99,7 +101,7 @@ function initializeNodeTemplates() {
                         strokeWidth: 3.5,
                         cursor: "pointer",
                         portId: "",
-                        fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+                        fromLinkable: true, fromLinkableSelfNode: false, fromLinkableDuplicates: true,
                         toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                     },
                 new go.Binding("fill", "Fill Color"),
@@ -129,7 +131,7 @@ function initializeNodeTemplates() {
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
-                selectionAdornmentTemplate: commandsAdornment
+                selectionAdornmentTemplate: commandsAdornment_IN
             },
             $(go.Panel, "Auto",
                 $(go.Shape, "Cloud",nodeShapeStyle()),
@@ -152,23 +154,32 @@ function initializeGroupTemplates(){
                 resizable: false,
                 computesBoundsAfterDrag: true,
                 selectionObjectName: "SHAPE",
-                // layout:
-                //     $(go.GridLayout,
-                //         {
-                //             alignment: go.GridLayout.Position,
-                //             wrappingColumn: 1
-                //         }
-                //     ),
+                visible: true,
                 selectionAdornmentTemplate: firewallAdornment,
-                resizeObjectName: "SHAPE"
+                resizeObjectName: "SHAPE",
+                fromLinkable: false, fromLinkableSelfNode: false, fromLinkableDuplicates: false,
+                toLinkable: false, toLinkableSelfNode: false, toLinkableDuplicates: false
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            new go.Binding("visible","visible"),
             $(go.Panel, "Spot", {},
-                $(go.Shape, "Circle", nodeShapeStyle(),
+                $(go.Shape, "Circle",
                     {
+                        name: "SHAPE",
+                        // width: 70,
+                        // height: 70,
+                        desiredSize: new go.Size(70,70),
+                        minSize: new go.Size(70,70),
+                        fill: "#282c34",
+                        stroke: "#00A9C9",
+                        strokeWidth: 3.5,
+                        cursor: "pointer",
+                        portId: "",
                         desiredSize: new go.Size(70, 70)
                     },
-                    new go.Binding("desiredSize", "size")
+                    new go.Binding("desiredSize", "size"),
+                    new go.Binding("fill", "Fill Color"),
+                    new go.Binding("stroke", "Stroke Color")
                 ),
                 $(go.TextBlock, "Firewall", textNodeStyle()),
                 $(go.Placeholder,    // represents the area of all member parts,
@@ -192,12 +203,21 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.Orthogonal,
-                corner: 5,
-                toShortLength: 6
+                routing: go.Link.AvoidsNodes,
+                corner: 10 ,
+                toShortLength: 0,
+                // a mouse-over highlights the link by changing the first main path shape's stroke:
+                mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
+                mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            $(go.Shape, {
+                isPanelMain: true,
+                stroke: "transparent",
+                strokeWidth: 8
+            }),  // thick undrawn path
             // the link path, a Shape
             $(go.Shape, {
+                    isPanelMain: true,
                     strokeWidth: 3,
                     stroke: "black"
                 },
@@ -207,12 +227,19 @@ function initializeLinkTemplates() {
                 {
                     toArrow: "Standard",
                     stroke: null,
-                    segmentOffset: new go.Point(-10, 0),
+                    segmentOffset: new go.Point(-30, 0),
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
             $(go.TextBlock, textLinkStyle(),                        // Link label
-                new go.Binding("text", "text"))
+                new go.Binding("text", "text")),
+            $(go.TextBlock, textLinkStyle(),
+                {
+                    name: "ID",
+                    editable: false,
+                    segmentIndex: 1,
+                    segmentFraction: 0.5
+                })
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoSaida",
@@ -220,15 +247,24 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.Orthogonal,
-                corner: 5,
-                toShortLength: 6
+                routing: go.Link.AvoidsNodes,
+                corner: 10 ,
+                toShortLength: 0,
+                // a mouse-over highlights the link by changing the first main path shape's stroke:
+                mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
+                mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            $(go.Shape, {
+                isPanelMain: true,
+                stroke: "transparent",
+                strokeWidth: 8
+            }),  // thick undrawn path
             // the link path, a Shape
             $(go.Shape, {
-                    strokeWidth: 3,
-                    stroke: "blue"
-                },
+                isPanelMain: true,
+                strokeWidth: 3,
+                stroke: "blue"
+            },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
             $(go.Shape,
@@ -236,11 +272,14 @@ function initializeLinkTemplates() {
                     toArrow: "Standard",
                     stroke: "blue",
                     fill: "blue",
-                    segmentOffset: new go.Point(-10, 0),
+                    segmentOffset: new go.Point(-30, 0),
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.TextBlock, textLinkStyle(),                        // Link label
+            $(go.TextBlock, textLinkStyle(),                     // Link label
+                {
+                    stroke: "blue"
+                },
                 new go.Binding("text", "text"))
         ));
 
@@ -249,15 +288,24 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.Orthogonal,
-                corner: 5,
-                toShortLength: 6
+                routing: go.Link.AvoidsNodes,
+                corner: 10 ,
+                toShortLength: 0,
+                // a mouse-over highlights the link by changing the first main path shape's stroke:
+                mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
+                mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            $(go.Shape, {
+                isPanelMain: true,
+                stroke: "transparent",
+                strokeWidth: 8
+            }),  // thick undrawn path
             // the link path, a Shape
             $(go.Shape, {
-                    strokeWidth: 3,
-                    stroke: "red"
-                },
+                isPanelMain: true,
+                strokeWidth: 3,
+                stroke: "red"
+            },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
             $(go.Shape,
@@ -265,12 +313,23 @@ function initializeLinkTemplates() {
                     toArrow: "Standard",
                     stroke: "red",
                     fill: "red",
-                    segmentOffset: new go.Point(-10, 0),
+                    segmentOffset: new go.Point(-30, 0),
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
             $(go.TextBlock, textLinkStyle(),                        // Link label
-                new go.Binding("text", "text"))
+                {
+                    stroke: "red"
+                },
+                new go.Binding("text", "text")),
+            $(go.TextBlock, textLinkStyle(),
+                {
+                    name: "ID",
+                    editable: false,
+                    segmentIndex: 1,
+                    segmentFraction: 0.5,
+                    stroke: "red"
+                })
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoRedirecionamento",
@@ -278,28 +337,44 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.Orthogonal,
-                corner: 5,
-                toShortLength: 6
+                routing: go.Link.AvoidsNodes,
+                corner: 10 ,
+                toShortLength: 0,
+                // a mouse-over highlights the link by changing the first main path shape's stroke:
+                mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
+                mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            $(go.Shape, {
+                isPanelMain: true,
+                stroke: "transparent",
+                strokeWidth: 8
+            }),  // thick undrawn path
             // the link path, a Shape
             $(go.Shape, {
-                    strokeDashArray: [5,5],
-                    strokeWidth: 3,
-                    stroke: "black"
-                },
+                isPanelMain: true,
+                strokeDashArray: [5,5],
+                strokeWidth: 3,
+                stroke: "black"
+            },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
             $(go.Shape,
                 {
                     toArrow: "Standard",
                     stroke: null,
-                    segmentOffset: new go.Point(-10, 0),
+                    segmentOffset: new go.Point(-30, 0),
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
             $(go.TextBlock, textLinkStyle(),                        // Link label
-                new go.Binding("text", "text"))
+                new go.Binding("text", "text")),
+            $(go.TextBlock, textLinkStyle(),
+                {
+                    name: "ID",
+                    editable: false,
+                    segmentIndex: 3,
+                    segmentFraction: 0.5
+                })
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoTraducao",
@@ -307,12 +382,22 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.Orthogonal,
-                corner: 5,
-                toShortLength: 6
+                routing: go.Link.AvoidsNodes,
+                corner: 10 ,
+                toShortLength: 0,
+                // a mouse-over highlights the link by changing the first main path shape's stroke:
+                mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
+                mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
-            // the link path, a Shape
             $(go.Shape, {
+                isPanelMain: true,
+                stroke: "transparent",
+                strokeWidth: 8
+            }),  // thick undrawn path
+            // the link path, a Shape
+            $(go.Shape,
+                {
+                    isPanelMain: true,
                     strokeDashArray: [5,5],
                     strokeWidth: 3,
                     stroke: "blue"
@@ -324,39 +409,14 @@ function initializeLinkTemplates() {
                     toArrow: "Standard",
                     stroke: "blue",
                     fill: "blue",
-                    segmentOffset: new go.Point(-10, 0),
+                    segmentOffset: new go.Point(-30, 0),
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
             $(go.TextBlock, textLinkStyle(),                        // Link label
-                new go.Binding("text", "text"))
-        ));
-
-    myDiagram.linkTemplateMap.add("FluxoSemControle",
-        $(go.Link,
-            // default routing is go.Link.Normal
-            // default corner is 0
-            {
-                routing: go.Link.Orthogonal,
-                corner: 5,
-                toShortLength: 6
-            },
-            // the link path, a Shape
-            $(go.Shape, {
-                    strokeWidth: 3,
-                    stroke: "#555"
-                },
-                new go.Binding("stroke", "color")),
-            // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-            $(go.Shape,
                 {
-                    toArrow: "PartialDoubleTriangle",
-                    stroke: null,
-                    segmentOffset: new go.Point(-10, 0),
-                    scale: 2
+                    stroke: "blue"
                 },
-                new go.Binding("fill", "color")),
-            $(go.TextBlock, textLinkStyle(),                        // Link label
                 new go.Binding("text", "text"))
         ));
 }
@@ -383,7 +443,8 @@ function textNodeStyle() {
 
 function textLinkStyle(){
     return {
-        segmentOffset: new go.Point(0, -10)
+        segmentOffset: new go.Point(0, -10),
+        font: "bold 12pt serif"
     }
 }
 

@@ -4,7 +4,8 @@ var commandsAdornment;
 var defaultNodeFillColor = "#282c34";
 var defaultNodeStrokeColor= "#00A9C9";
 var defaultTextcolor= "white";
-
+var traffic_in_ids=1;
+var traffic_blk_ids=1;
 
 function init() {
 
@@ -45,7 +46,55 @@ function init() {
             )
         );
 
-    commandsAdornment =
+    commandsAdornment_IN =
+        $("ContextMenu",
+            $(go.Panel, "Auto",
+                $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
+                $(go.Placeholder)
+            ),
+            new go.Binding("visible", "", isPallet).ofObject(),
+            $(go.Panel, "Horizontal",
+                {defaultStretch: go.GraphObject.Vertical, scale: 1.1},
+                $("Button",
+                    $(go.Shape,
+                        {
+                            geometryString: "m 0 2 c 14 0 14 0 14 0 z M 6 0 F V 4 l -3 -2 z",
+                            fill: "#000000", stroke: "black", strokeWidth: 1.5, margin: 0, scale: 1.5
+                        }),
+                    {click: startLinkIn, toolTip: makeTooltip("Liberar tráfego de entrada")},
+                    new go.Binding("visible", "", canStartLink).ofObject()
+                ),
+                $("Button",
+                    $(go.Shape,
+                        {
+                            geometryString: "m 0 2 c 14 0 14 0 14 0 z M 6 0 F V 4 l -3 -2 z",
+                            fill: "red", stroke: "red", strokeWidth: 1.5, margin: 0, scale: 1.5
+                        }),
+                    { click: startLinkBlock, toolTip: makeTooltip("Bloquear Tráfego") },
+                    new go.Binding("visible", "", canStartLink).ofObject()
+                )
+                // $("Button",
+                //     $(go.Shape,
+                //         {
+                //             geometryString: "m 0 2 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 z M 7 0 F V 4 l 3 -2.0271 z",
+                //             fill: "black", stroke: "black", margin: 0, strokeWidth: 1.5, scale: 1.5
+                //         }),
+                //     { click: startLinkRedirect, toolTip: makeTooltip("Redirecionar Tráfego") },
+                //     new go.Binding("visible", "", canStartLink).ofObject()
+                // ),
+                // $("Button",
+                //     $(go.Shape,
+                //         {
+                //             geometryString: "m 0 2 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 m 1 0 c 2 0 2 0 2 0 z M 7 0 F V 4 l 3 -2.0271 z",
+                //             fill: "blue", stroke: "blue", margin: 0, strokeWidth: 1.5, scale: 1.5
+                //         }),
+                //     { click: startLinkTranslate, toolTip: makeTooltip("Traduzir Tráfego") },
+                //     new go.Binding("visible", "", canStartLink).ofObject()
+                // )
+            )
+        );
+
+    commandsAdornment_OUT =
         $("ContextMenu",
             $(go.Panel, "Auto",
                 $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
@@ -58,27 +107,9 @@ function init() {
                     $(go.Shape,
                         {
                             geometryString: "m 0 2 c 14 0 14 0 14 0 z M 8 0 F V 4 l 3 -2.0271 z",
-                            fill: "#000000", stroke: "black", strokeWidth: 1.5, margin: 0, scale: 1.5
-                        }),
-                    {click: startLinkIn, toolTip: makeTooltip("Liberar tráfego de entrada")},
-                    new go.Binding("visible", "", canStartLink).ofObject()
-                ),
-                $("Button",
-                    $(go.Shape,
-                        {
-                            geometryString: "m 0 2 c 14 0 14 0 14 0 z M 8 0 F V 4 l 3 -2.0271 z",
                             fill: "blue", stroke: "blue", strokeWidth: 1.5, margin: 0, scale: 1.5
                         }),
                     { click: startLinkOut, toolTip: makeTooltip("Liberar tráfego de saída") },
-                    new go.Binding("visible", "", canStartLink).ofObject()
-                ),
-                $("Button",
-                    $(go.Shape,
-                        {
-                            geometryString: "m 0 2 c 14 0 14 0 14 0 z M 8 0 F V 4 l 3 -2.0271 z",
-                            fill: "red", stroke: "red", strokeWidth: 1.5, margin: 0, scale: 1.5
-                        }),
-                    { click: startLinkBlock, toolTip: makeTooltip("Bloquear Tráfego") },
                     new go.Binding("visible", "", canStartLink).ofObject()
                 )
                 // $("Button",
@@ -122,6 +153,7 @@ function init() {
                     category: "Firewall",
                     text: "Firewall",
                     isGroup: true,
+                    visible: true,
                     "placeholder.alignment": go.Spot.Center,
                     "Fill Color": defaultNodeFillColor,
                     "Stroke Color": defaultNodeStrokeColor,
@@ -143,7 +175,7 @@ function init() {
                     "Fill Color": defaultNodeFillColor,
                     "Stroke Color": defaultNodeStrokeColor,
                     "Text Color": defaultTextcolor,
-                    "Prefix:": "",
+                    "Prefix": "",
                     "Netmask": ""
                 },
                 {
@@ -191,11 +223,12 @@ function init() {
                 "placeholder.alignment": {show: false},
                 "Default Colors": {show: Inspector.showIfNode, type: "checkbox", defaultValue: false},
                 "Default Policy": { show: Inspector.showIfPresent, type: "select", choices: ["block", "permit"], defaultValue: "block"},
-                "Device Name": {show: Inspector.showIfPresent, type: "text", defaultValue: "eth0"},
+                "Device Name": {show: Inspector.showIfPresent, type: "text", defaultValue: ""},
                 "IP": {show: Inspector.showIfPresent, type: "text", defaultValue: ""},
+                "Prefix": {show: Inspector.showIfPresent, type: "text", defaultValue: ""},
                 "Netmask": {show: Inspector.showIfPresent, type: "text", defaultValue: ""},
                 "Firewall Name": {show: Inspector.showIfPresent, readOnly: true, type: "text"},
-                "ID": {show: Inspector.showIfPresent, type: "number"},
+                "ID": {show: Inspector.showIfPresent, type: "number", readOnly: true},
                 "Interface": {show: Inspector.showIfPresent, readOnly: true},
                 "External Entity": {show: Inspector.showIfPresent, readOnly: true},
                 "Source Entity": {show: Inspector.showIfPresent, readOnly: true},
@@ -210,7 +243,9 @@ function init() {
                 "To": {show: Inspector.showIfPresent, readOnly: true},
                 "Hosts": {show: Inspector.showIfPresent, type: "select-multiple", choices: getHosts},
                 "Protocols":  {show: Inspector.showIfPresent, type: "select-multiple", choices: ["TCP","UDP","ICMP"]},
-                "AF": {show: Inspector.showIfPresent, type: "select", choices: ["inet","inet6"], defaultValue: "inet"}
+                "AF": {show: Inspector.showIfPresent, type: "select", choices: ["inet","inet6"], defaultValue: "inet"},
+                "visible": {show: false},
+                "group" : {show: false}
             },
             propertyModified: onPropertyChanged
         });
@@ -252,6 +287,9 @@ function init() {
                 if(link.data["category"]==="TrafegoRedirecionamento"){
                     myDiagram.startTransaction("change link");
                     myDiagram.model.setDataProperty(link.data, "category", "TrafegoEntrada");
+                    link.setProperties({
+                        "ID.text": link.data.ID
+                    })
                     // myDiagram.requestUpdate();
                     myDiagram.commitTransaction("change link");
                 }
@@ -260,12 +298,83 @@ function init() {
             if(link.data["category"]==="TrafegoEntrada"){
                 myDiagram.startTransaction("change link");
                 myDiagram.model.setDataProperty(link.data, "category", "TrafegoRedirecionamento");
+                link.setProperties({
+                    "ID.text": link.data.ID
+                })
                 // myDiagram.requestUpdate();
                 myDiagram.commitTransaction("change link");
                 return;
             }
         }
+        if(property === "IP"){
+            if(value === "") return;
+            if(!validateIPaddress(value)) {
+                alert("You have entered an invalid IP address!");
+                var node = myDiagram.selection.first();
+                myDiagram.startTransaction("clear IP");
+                myDiagram.model.setDataProperty(node.data, "IP", "");
+                myDiagram.commitTransaction("clear IP");
+            }
+        }
+        if(property === "Netmask"){
+            if(value === "") return;
+            if(!validateNetmask(value)) {
+                alert("You have entered an invalid netmask!");
+                var node = myDiagram.selection.first();
+                myDiagram.startTransaction("clear Netmask");
+                myDiagram.model.setDataProperty(node.data, "Netmask", "");
+                myDiagram.commitTransaction("clear Netmask");
+            }
+        }
+        if(property === "Device Name"){
+            if(value === "")return;
+            if(!validateDeviceName(value)){
+                alert("This interface name already exists!");
+                var node = myDiagram.selection.first();
+                myDiagram.startTransaction("clear Device Name");
+                myDiagram.model.setDataProperty(node.data, "Device Name", "");
+                myDiagram.commitTransaction("clear Device Name");
+            }
+        }
+        if(property === "Prefix"){
+            if(value === "") return;
+            if(!validateIPaddress(value)) {
+                alert("You have entered an invalid Prefix address!");
+                var node = myDiagram.selection.first();
+                myDiagram.startTransaction("clear Prefix");
+                myDiagram.model.setDataProperty(node.data, "Prefix", "");
+                myDiagram.commitTransaction("clear Prefix");
+            }
+        }
 
+    }
+
+    function validateDeviceName(inputText){
+        interfaces = myDiagram.findNodesByExample({category: "Interface"});
+        interfaces_array = [];
+        it = interfaces.iterator;
+        while(it.next()){
+            //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
+            if(it.value.data["Device Name"]==="") continue;
+            interfaces_array.push(it.value.data["Device Name"]);
+        }
+        console.log(interfaces_array.filter(item => item == inputText).length)
+        if(interfaces_array.filter(item => item == inputText).length > 1) {
+            return false;
+        }
+        return true;
+    }
+
+    function validateIPaddress(inputText){
+        var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        if(!inputText.match(ipformat)) return false;
+        return true;
+    }
+
+    function validateNetmask(inputText){
+        intText = parseInt(inputText);
+        if(intText<1 || intText>32) return false;
+        return true;
     }
 
     function trafficIDs(){
@@ -281,12 +390,11 @@ function init() {
 
     function getHosts(){
         hosts = myDiagram.findNodesByExample({category: "Host"});
-
         choices = [];
         it = hosts.iterator;
         while(it.next()){
             //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
-            choices.push(it.value.data["text"]);
+            choices.push(it.value.data["text"]+" - "+it.value.data["IP"]);
         }
         return choices;
     }
@@ -370,7 +478,6 @@ function init() {
         tool.startObject = node.port;
         myDiagram.currentTool = tool;
         tool.doActivate();
-        console.log(tool.archetypeLinkData);
     }
 
     function canStartLink(adorn) {
@@ -380,6 +487,14 @@ function init() {
 
 
     myDiagram.toolManager.linkingTool.temporaryLink = myDiagram.linkTemplateMap.get("TrafegoSaida");
+
+    function canLink(fromnode, fromport, tonode, toport) {
+        if(fromnode.data.category == "Interface" && tonode.data.category == "Interface") return false;
+        if(fromnode.data.category != "Interface" && tonode.data.category != "Interface") return false;
+        return true;
+    }
+
+    myDiagram.toolManager.linkingTool.linkValidation = canLink;
 
     var tempfromnode =
         $(go.Node,
@@ -403,6 +518,7 @@ function init() {
 
     myDiagram.addDiagramListener("LinkDrawn", function (e) {
         link = e.subject.data;
+        link2 = e.subject;
         //myDiagram.startTransaction("Set Link Attrs");
         from = myDiagram.model.findNodeDataForKey(myDiagram.model.getFromKeyForLinkData(link)).text
         //myDiagram.model.setDataProperty(link, "From", from);
@@ -412,7 +528,12 @@ function init() {
         switch (link.category) {
             case 'TrafegoEntrada':
                 myDiagram.startTransaction("Set Link Attrs");
-                myDiagram.model.setDataProperty(link, "ID", "");
+                myDiagram.model.setDataProperty(link, "text","Entrada");
+                link2.setProperties({
+                    "ID.text": traffic_in_ids
+                });
+                myDiagram.model.setDataProperty(link, "ID", traffic_in_ids);
+                traffic_in_ids++;
                 myDiagram.model.setDataProperty(link, "Source Port", "");
                 myDiagram.model.setDataProperty(link, "Redirect Port", "");
                 myDiagram.model.setDataProperty(link, "Protocols", "");
@@ -436,7 +557,12 @@ function init() {
                 break;
             case 'TrafegoBloqueio':
                 myDiagram.startTransaction("Set Link Attrs");
-                myDiagram.model.setDataProperty(link, "ID", "");
+                myDiagram.model.setDataProperty(link, "text", "Bloquear Entrada");
+                link2.setProperties({
+                    "ID.text": traffic_blk_ids
+                });
+                myDiagram.model.setDataProperty(link, "ID",traffic_blk_ids);
+                traffic_blk_ids++;
                 myDiagram.model.setDataProperty(link, "AF", "inet");
                 tointerface = myDiagram.findNodeForKey(myDiagram.model.getToKeyForLinkData(link));
                 interface_device = tointerface.data["Device Name"];
@@ -497,7 +623,9 @@ function init() {
         //seleciona apenas o grupo firewall, ao inves do firewall e a interface criada
         //expande o grupo que estava comprimido na pallet.
         if (e.subject.first().data.category === "Firewall") {
-            console.log(e.subject.first().data)
+            firewall_pallet = myPallet.findNodesByExample({category: "Firewall"});
+            firewall_pallet = firewall_pallet.iterator.first();
+            myPallet.model.setDataProperty(firewall_pallet,"visible",false)
             addInterface();
             e.subject.first().setProperties({
                 "placeholder.alignment": go.Spot.BottomLeft,
@@ -512,12 +640,35 @@ function init() {
         if (e.subject.first().data.category === "Interface") {
             resizeFirewallDown(e.subject.first());
         }
+        if (e.subject.first().data.category === "Firewall") {
+            firewall_pallet = myPallet.findNodesByExample({category: "Firewall"});
+            firewall_pallet = firewall_pallet.iterator.first();
+            myPallet.model.setDataProperty(firewall_pallet,"visible",true);
+        }
 
     });
 
+    myDiagram.addModelChangedListener(function(evt) {
+        // ignore unimportant Transaction events
+        if (!evt.isTransactionFinished) return;
+        var txn = evt.object;  // a Transaction
+        if (txn === null) return;
+        // iterate over all of the actual ChangedEvents of the Transaction
+        txn.changes.each(function(e) {
+            // ignore any kind of change other than adding/removing a node
+            if (e.modelChange !== "nodeDataArray") return;
+            // record node undo event
+            if (e.change === go.ChangedEvent.Remove) return;
+            if(evt.propertyName !== "FinishedUndo") return;
+            if(e.newValue.category === "Firewall"){
+                firewall_pallet = myPallet.findNodesByExample({category: "Firewall"});
+                firewall_pallet = firewall_pallet.iterator.first();
+                myPallet.model.setDataProperty(firewall_pallet,"visible",true);
+            }
+        });
+    });
+
 }
-
-
 
 
 function resizeFirewallUp(firewall){
@@ -559,7 +710,7 @@ function addInterface() {
             "Fill Color": defaultNodeFillColor,
             "Stroke Color": defaultNodeStrokeColor,
             "Text Color": defaultTextcolor,
-            "Device Name": "eth0",
+            "Device Name": "",
             "IP": "",
             "Netmask": "",
             "Firewall Name":  ""
@@ -613,3 +764,8 @@ CustomLinkingTool.prototype.doStop = function() {
     myDiagram.commitTransaction("allow link");
 };
 // end CustomLinkingTool
+
+function toJson() {
+    document.getElementById("JsonModel").value = myDiagram.model.toJson();
+    myDiagram.isModified = false;
+}

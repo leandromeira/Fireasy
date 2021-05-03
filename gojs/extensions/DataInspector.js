@@ -580,7 +580,6 @@ Inspector.prototype.updateSelect = function(decProp, select, propertyName, prope
     }
   }
   else{
-    console.log("entrou")
     select.value = this.convertToString(propertyValue);
   }
 }

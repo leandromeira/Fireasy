@@ -49,5 +49,6 @@ see also: DataInspector.js, DataInspector.html
 
 .inspector select {
   background-color: #424242;
+  color: #F5F5F5; /* Grey 100 */
 }
 
