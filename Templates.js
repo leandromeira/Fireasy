@@ -4,33 +4,6 @@
 
 function initializeNodeTemplates() {
 
-    // // FIREWALL TEMPLATE
-    // myDiagram.nodeTemplateMap.add("Firewall",
-    //     $(go.Node, "Auto", nodeStyle(),
-    //         {resizable: true, resizeObjectName: "SHAPE"},
-    //         $(go.Panel, "Auto",
-    //             $(go.Shape, "Circle",
-    //                 {
-    //                     name: "SHAPE",
-    //                     //desiredSize: new go.Size(70, 70),
-    //                     fill: "#282c34",
-    //                     stroke: "#09d3ac",
-    //                     strokeWidth: 3.5,
-    //                     cursor: "pointer",
-    //                     portId: "",
-    //                     fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-    //                     toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
-    //                 },
-    //                 new go.Binding("fill", "color")),
-    //             $(go.TextBlock, "Start", textStyle(),
-    //                 new go.Binding("text"),
-    //                 {
-    //                     editable: true
-    //                 }
-    //             )
-    //         )
-    //     ));
-
     //HOSTS TEMPLATE
     myDiagram.nodeTemplateMap.add("Hosts",  // the category
         $(go.Node, "Table", nodeStyle(),
@@ -110,21 +83,6 @@ function initializeNodeTemplates() {
             ),
         ));
 
-    // //RDR TEMPLATE
-    // myDiagram.nodeTemplateMap.add("RDR",  // the category
-    //     $(go.Node, "Table", nodeStyle(),
-    //         {
-    //             resizable: true,
-    //             resizeObjectName: "SHAPE",
-    //             selectionAdornmentTemplate: commandsAdornment
-    //         },
-    //         // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-    //         $(go.Panel, "Auto",
-    //             $(go.Shape, "RoundedSeparatedRectangle",nodeShapeStyle()),
-    //             $(go.TextBlock, textNodeStyle())
-    //         ),
-    //     ));
-
     //INTERNET TEMPLATE
     myDiagram.nodeTemplateMap.add("Internet",
         $(go.Node, "Table", nodeStyle(),
@@ -168,14 +126,13 @@ function initializeGroupTemplates(){
                         name: "SHAPE",
                         // width: 70,
                         // height: 70,
-                        desiredSize: new go.Size(70,70),
-                        minSize: new go.Size(70,70),
+                        desiredSize: new go.Size(80,80),
+                        minSize: new go.Size(80,80),
                         fill: "#282c34",
                         stroke: "#00A9C9",
                         strokeWidth: 3.5,
                         cursor: "pointer",
                         portId: "",
-                        desiredSize: new go.Size(70, 70)
                     },
                     new go.Binding("desiredSize", "size"),
                     new go.Binding("fill", "Fill Color"),
@@ -421,6 +378,10 @@ function initializeLinkTemplates() {
         ));
 }
 
+//--------------------------------------------//
+//----------------- STYLES -------------------//
+//--------------------------------------------//
+
 function textNodeStyle() {
     return [
         {
@@ -469,8 +430,8 @@ function nodeShapeStyle(){
             name: "SHAPE",
             // width: 70,
             // height: 70,
-            desiredSize: new go.Size(70,70),
-            minSize: new go.Size(70,70),
+            desiredSize: new go.Size(80,80),
+            minSize: new go.Size(80,80),
             fill: "#282c34",
             stroke: "#00A9C9",
             strokeWidth: 3.5,

@@ -167,8 +167,6 @@ Inspector.prototype.inspectObject = function(object) {
       if (!this.canShowProperty(name, desc, inspectedObject)) continue;
       var val = this.findValue(name, desc, data);
       tbody.appendChild(this.buildPropertyRow(name, val));
-      // console.log(name);
-      // console.log(val);
     }
     // Go through all the properties on the model data and show them, if appropriate:
     if (this.includesOwnProperties) {
@@ -574,7 +572,6 @@ Inspector.prototype.updateSelect = function(decProp, select, propertyName, prope
     for(i=0;i<propertyValue.length;i++){
       values.push(propertyValue[i].label)
     }
-    console.log(values)
     for (var i = 0; i < select.options.length; i++) {
       select.options[i].selected = values.indexOf(select.options[i].value) >= 0;
     }
@@ -640,7 +637,6 @@ Inspector.prototype.updateAllProperties = function() {
           //na hora de inspecionar o objeto, primeiro adiciona as choices, depois percorre o array com os nomes selecionados,
           //selecionando eles no select
           value = input.selectedOptions;
-          //console.log(decProp);
           break;
       }
 
@@ -650,8 +646,6 @@ Inspector.prototype.updateAllProperties = function() {
 
       // modify the data object in an undo-able fashion
       diagram.model.setDataProperty(data, name, value);
-      //console.log(name);
-      //console.log(value);
 
 
       // notify any listener
