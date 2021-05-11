@@ -15,6 +15,17 @@
     <script src="Utils.js"></script>
     <script src="Listeners.js"></script>
     <script src="Validation.js"></script>
+    <script src="TranslateMetaSPML.js"></script>
+    <script src="ObjectifyMetaSPML.js"></script>
+    <script src="Estrutura/Firewall.js"></script>
+    <script src="Estrutura/Host.js"></script>
+    <script src="Estrutura/Hosts.js"></script>
+    <script src="Estrutura/Network.js"></script>
+    <script src="Estrutura/Interface.js"></script>
+    <script src="Estrutura/UnknownNetwork.js"></script>
+    <script src="Estrutura/IncomingTraffic.js"></script>
+    <script src="Estrutura/OutgoingTraffic.js"></script>
+    <script src="Estrutura/BlockTraffic.js"></script>
 
 
 </head>
@@ -28,9 +39,11 @@
         </span>
     </div>
 
-    <button id="toJson" onclick="toJson()">To JSON</button>
+    <button id="translate" onclick="Translate()">Translate</button>
+    <button id="Load Example" onclick="Load()">Load from Json</button>
     Diagram Model in JSON format:
     <textarea id="JsonModel" style="width:100%;height:300px"> </textarea>
-
+    Diagram Model in SPML metalanguage:
+    <textarea id="SPMLModel" style="width:100%;height:300px"> </textarea>
 </body>
 </html>

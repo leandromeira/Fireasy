@@ -1,6 +1,5 @@
 class Host {
-    constructor(id, name, ip, netmask){
-        this.id = id;
+    constructor( name, ip, netmask){
         this.name = name;
         this.ip = ip;
         this.netmask = netmask;
@@ -30,7 +29,4 @@ class Host {
         return this.netmask;
     }
 
-    getId(){
-        return this.id;
-    }
 }

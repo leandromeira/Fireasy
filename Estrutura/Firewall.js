@@ -1,6 +1,5 @@
 class Firewall {
-    constructor(id, name, defaultpolicy){
-        this.id = id;
+    constructor(name, defaultpolicy){
         this.name = name;
         this.defaultpolicy = defaultpolicy;
     }
@@ -19,9 +18,4 @@ class Firewall {
     getDefaultpolicy(){
         return this.defaultpolicy;
     }
-
-    getId(){
-        return this.id;
-    }
-
 }

@@ -14,6 +14,7 @@ function addInspector(){
                 "category": {show: Inspector.showIfLink, readOnly: true},
                 "to": {show: Inspector.showIfLink},
                 "loc": {show: false},
+                "size": {show: false},
                 "isGroup": {show: false},
                 "placeholder.alignment": {show: false},
                 "Default Colors": {show: Inspector.showIfNode, type: "checkbox", defaultValue: false},
@@ -112,6 +113,7 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear IP");
             myDiagram.model.setDataProperty(node.data, "IP", "");
             myDiagram.commitTransaction("clear IP");
+            return;
         }
     }
     if(property === "Netmask"){
@@ -122,6 +124,7 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear Netmask");
             myDiagram.model.setDataProperty(node.data, "Netmask", "");
             myDiagram.commitTransaction("clear Netmask");
+            return;
         }
     }
     if(property === "Device Name"){
@@ -132,6 +135,7 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear Device Name");
             myDiagram.model.setDataProperty(node.data, "Device Name", "");
             myDiagram.commitTransaction("clear Device Name");
+            return;
         }
     }
     if(property === "Prefix"){
@@ -142,6 +146,7 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear Prefix");
             myDiagram.model.setDataProperty(node.data, "Prefix", "");
             myDiagram.commitTransaction("clear Prefix");
+            return;
         }
     }
     if(property === "Source Port"){
@@ -152,6 +157,7 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear Source Port");
             myDiagram.model.setDataProperty(node.data, "Source Port", "");
             myDiagram.commitTransaction("clear Source Port");
+            return;
         }
     }
     if(property === "Redirect Port"){
@@ -162,6 +168,7 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear Redirect Port");
             myDiagram.model.setDataProperty(node.data, "Redirect Port", "");
             myDiagram.commitTransaction("clear Redirect Port");
+            return;
         }
     }
     if(property === "Destiny Port"){
@@ -172,6 +179,22 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.startTransaction("clear Destiny Port");
             myDiagram.model.setDataProperty(node.data, "Destiny Port", "");
             myDiagram.commitTransaction("clear Destiny Port");
+            return;
+        }
+    }
+    if(property === "text"){
+        //if(value === "") return;
+        node = myDiagram.selection.first();
+        if(node.data["category"]==="Firewall"){
+            myDiagram.startTransaction("change interfaces firewall name ");
+            changeInterfacesFirewallName(value);
+            myDiagram.commitTransaction("change interfaces firewall name ");
+            return;
+        }
+        if(!validateUniqueName(node,value)) {
+            myDiagram.startTransaction("clear text");
+            myDiagram.model.setDataProperty(node.data, "text", "");
+            myDiagram.commitTransaction("clear text");
         }
     }
 }

@@ -22,14 +22,12 @@ function defineListeners(){
             myDiagram.commandHandler.expandSubGraph();
         }
         if(e.subject.first().data.category === "Host"){
-            console.log(e.subject.first().data.text)
             e.subject.first().setProperties({
                 "TEXT.text": "Host"+host_count
             })
             host_count++;
         }
         if(e.subject.first().data.category === "Hosts"){
-            console.log(e.subject.first().data.text)
             e.subject.first().setProperties({
                 "TEXT.text": "Hosts"+hosts_count
             })
@@ -87,13 +85,13 @@ function defineListeners(){
                 });
                 myDiagram.model.setDataProperty(link, "ID", traffic_in_ids);
                 traffic_in_ids++;
-                myDiagram.model.setDataProperty(link, "Source Port", "");
+                myDiagram.model.setDataProperty(link, "Source Port", "*");
                 myDiagram.model.setDataProperty(link, "Redirect Port", "");
                 myDiagram.model.setDataProperty(link, "Protocols", "");
                 myDiagram.model.setDataProperty(link, "AF", "inet");
                 tointerface = myDiagram.findNodeForKey(myDiagram.model.getToKeyForLinkData(link));
                 interface_device = tointerface.data["Device Name"];
-                myDiagram.model.setDataProperty(link, "Interface", to+" ("+interface_device+")");
+                myDiagram.model.setDataProperty(link, "Interface", to);
                 myDiagram.model.setDataProperty(link, "External Entity", from);
                 myDiagram.commitTransaction("Set Link Attrs");
                 break;
@@ -103,9 +101,9 @@ function defineListeners(){
                 outgoing_traffic_count++;
                 frominterface = myDiagram.findNodeForKey(myDiagram.model.getFromKeyForLinkData(link));
                 interface_device = frominterface.data["Device Name"];
-                myDiagram.model.setDataProperty(link, "Interface", from+" ("+interface_device+")");
+                myDiagram.model.setDataProperty(link, "Interface", from);
                 myDiagram.model.setDataProperty(link, "External Entity", to);
-                myDiagram.model.setDataProperty(link, "Destiny Port", "");
+                myDiagram.model.setDataProperty(link, "Destiny Port", "*");
                 myDiagram.model.setDataProperty(link, "NAT", false);
                 myDiagram.model.setDataProperty(link, "Traffic IDs", "");
                 myDiagram.commitTransaction("Set Link Attrs");
@@ -122,24 +120,24 @@ function defineListeners(){
                 myDiagram.model.setDataProperty(link, "AF", "inet");
                 tointerface = myDiagram.findNodeForKey(myDiagram.model.getToKeyForLinkData(link));
                 interface_device = tointerface.data["Device Name"];
-                myDiagram.model.setDataProperty(link, "Interface", to+" ("+interface_device+")");
+                myDiagram.model.setDataProperty(link, "Interface", to);
                 myDiagram.model.setDataProperty(link, "Source Entity", from);
-                myDiagram.model.setDataProperty(link, "Destiny Entities", from);
-                myDiagram.model.setDataProperty(link, "Source Port", "");
-                myDiagram.model.setDataProperty(link, "Destiny Port", "");
+                myDiagram.model.setDataProperty(link, "Destiny Entities", "");
+                myDiagram.model.setDataProperty(link, "Source Port", "*");
+                myDiagram.model.setDataProperty(link, "Destiny Port", "*");
                 myDiagram.model.setDataProperty(link, "Protocols", "");
                 myDiagram.commitTransaction("Set Link Attrs");
                 break;
             case 'TrafegoRedirecionamento':
                 myDiagram.startTransaction("Set Link Attrs");
                 myDiagram.model.setDataProperty(link, "ID", "");
-                myDiagram.model.setDataProperty(link, "Source Port", "");
+                myDiagram.model.setDataProperty(link, "Source Port", "*");
                 myDiagram.model.setDataProperty(link, "Redirect Port", "");
                 myDiagram.model.setDataProperty(link, "Protocols", "");
                 myDiagram.model.setDataProperty(link, "AF", "inet");
                 tointerface = myDiagram.findNodeForKey(myDiagram.model.getToKeyForLinkData(link));
                 interface_device = tointerface.data["Device Name"];
-                myDiagram.model.setDataProperty(link, "Interface", to+" ("+interface_device+")");
+                myDiagram.model.setDataProperty(link, "Interface", to);
                 myDiagram.model.setDataProperty(link, "External Entity", from);
                 myDiagram.commitTransaction("Set Link Attrs");
                 break;
@@ -147,9 +145,9 @@ function defineListeners(){
                 myDiagram.startTransaction("Set Link Attrs");
                 frominterface = myDiagram.findNodeForKey(myDiagram.model.getFromKeyForLinkData(link));
                 interface_device = frominterface.data["Device Name"];
-                myDiagram.model.setDataProperty(link, "Interface", from+" ("+interface_device+")");
+                myDiagram.model.setDataProperty(link, "Interface", from);
                 myDiagram.model.setDataProperty(link, "External Entity", to);
-                myDiagram.model.setDataProperty(link, "Destiny Port", "");
+                myDiagram.model.setDataProperty(link, "Destiny Port", "*");
                 myDiagram.model.setDataProperty(link, "NAT", true);
                 myDiagram.model.setDataProperty(link, "Traffic IDs", "");
                 myDiagram.commitTransaction("Set Link Attrs");

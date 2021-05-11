@@ -1,6 +1,5 @@
 class Network {
-    constructor(id, name, prefix, netmask){
-        this.id = id;
+    constructor(name, prefix, netmask){
         this.name = name;
         this.prefix = prefix;
         this.netmask = netmask;
@@ -30,7 +29,4 @@ class Network {
         return this.netmask;
     }
 
-    getId(){
-        return this.id;
-    }
 }

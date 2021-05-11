@@ -1,4 +1,4 @@
-class StreamIn {
+class IncomingTraffic {
     constructor(id, id_stream, name, inter, extern_entity, source_port, redirect_port, protocol, ip_version){
         this.id = id;
         this.id_stream = id_stream;

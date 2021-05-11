@@ -537,6 +537,7 @@ Inspector.prototype.updateAllHTML = function() {
       var input = inspectedProps[name];
       var propertyValue = data[name];
       if (input instanceof HTMLSelectElement) {
+        console.log("teste")
         var decProp = this.declaredProperties[name];
         this.updateSelect(decProp, input, name, propertyValue);
       } else if (input.type === "color") {
@@ -570,7 +571,7 @@ Inspector.prototype.updateSelect = function(decProp, select, propertyName, prope
   if(select.multiple) {
     var values=[];
     for(i=0;i<propertyValue.length;i++){
-      values.push(propertyValue[i].label)
+      values.push(propertyValue[i])
     }
     for (var i = 0; i < select.options.length; i++) {
       select.options[i].selected = values.indexOf(select.options[i].value) >= 0;
@@ -633,19 +634,31 @@ Inspector.prototype.updateAllProperties = function() {
         case 'checkbox': value = input.checked; break;
         case 'select': value = decProp.choicesArray[input.selectedIndex]; break;
         case 'select-multiple':
+          value = []
           //tem que salvar os nomes dos campos selecionados
           //na hora de inspecionar o objeto, primeiro adiciona as choices, depois percorre o array com os nomes selecionados,
           //selecionando eles no select
-          value = input.selectedOptions;
+          //value = input.selectedOptions;
+          for(i =0;i<decProp.choicesArray.length;i++){
+              for(j=0;j<input.selectedOptions.length;j++){
+                  if(decProp.choicesArray[i].localeCompare(input.selectedOptions[j].label) === 0){
+                    value.push(input.selectedOptions[j].label);
+                    //console.log(input.selectedOptions[j].label)
+                  }
+              }
+          }
           break;
       }
 
       // in case parsed to be different, such as in the case of boolean values,
       // the value shown should match the actual value
-      if(type != 'select-multiple') input.value = value;
+      if(type != 'select-multiple') {
+        input.value = value;
+      }
 
       // modify the data object in an undo-able fashion
       diagram.model.setDataProperty(data, name, value);
+      //console.log(data+", "+name,", "+value)
 
 
       // notify any listener

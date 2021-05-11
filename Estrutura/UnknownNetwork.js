@@ -1,6 +1,5 @@
 class UnknownNetwork {
-    constructor(id,name){
-        this.id = id;
+    constructor(name){
         this.name = name;
     }
 
@@ -10,9 +9,5 @@ class UnknownNetwork {
 
     getName(){
         return this.name;
-    }
-
-    getId(){
-        return this.id;
     }
 }

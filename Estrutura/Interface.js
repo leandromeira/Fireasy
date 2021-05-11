@@ -1,6 +1,5 @@
 class Interface {
-    constructor(id, name,devicename,ip,netmask,fwname){
-        this.id = id;
+    constructor(name,devicename,ip,netmask,fwname){
         this.name = name;
         this.devicename = devicename;
         this.ip = ip;
@@ -46,9 +45,5 @@ class Interface {
 
     getFwname(){
         return this.fwname;
-    }
-
-    getId(){
-        return this.id;
     }
 }

@@ -1,4 +1,4 @@
-class StreamBlock {
+class BlockTraffic {
     constructor(id, id_stream, name, ip_version, inter, extern_entity_source, source_port, extern_entity_destiny, dest_port, protocol, ){
         this.id = id;
         this.id_stream = id_stream;

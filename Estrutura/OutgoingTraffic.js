@@ -1,4 +1,4 @@
-class StreamOut {
+class OutgoingTraffic {
     constructor(id, name, inter, extern_entity, dest_port, network_translate, traffic_ids){
         this.id = id;
         this.name = name;

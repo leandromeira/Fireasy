@@ -1,6 +1,5 @@
 class Hosts {
-    constructor(id, name, hosts){
-        this.id = id;
+    constructor(name, hosts){
         this.name = name;
         this.hosts = hosts;
     }
@@ -21,7 +20,4 @@ class Hosts {
         return this.hosts;
     }
 
-    getId(){
-        return this.id;
-    }
 }

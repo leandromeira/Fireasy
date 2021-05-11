@@ -75,7 +75,7 @@ function defineAdornments(){
                             fill: "blue", stroke: "blue", strokeWidth: 1.5, margin: 0, scale: 1.5
                         }),
                     { click: startLinkOut, toolTip: makeTooltip("Liberar tráfego de saída") },
-                    new go.Binding("visible", "", canStartLink).ofObject()
+                    new go.Binding("visible", "", canStartLinkOut).ofObject()
                 )
             )
         );
@@ -123,4 +123,11 @@ function startLink(node, category, condition) {
 function canStartLink(adorn) {
     var node = adorn.adornedPart;
     return true;  // this could be smarter
+}
+
+function canStartLinkOut(adorn) {
+    var node = adorn.adornedPart;
+    entrada = myDiagram.findLinksByExample({category: "TrafegoEntrada"});
+    if(entrada.count == 0) return false;
+    return true;
 }

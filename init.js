@@ -93,8 +93,21 @@ CustomLinkingTool.prototype.doStop = function() {
 };
 // end CustomLinkingTool
 
-function toJson() {
-    validateAllFields();
-    document.getElementById("JsonModel").value = myDiagram.model.toJson();
+function Translate() {
+    //validateAllFields();
+    json = myDiagram.model.toJson();
+    document.getElementById("JsonModel").value = json;
+    spml =  translateMetaSPML(json);
+    document.getElementById("SPMLModel").value = spml;
+    objectifyMetaSPML(spml);
     myDiagram.isModified = false;
+}
+
+function Load(){
+    //json = myDiagram.model.toJson();
+    json = document.getElementById("JsonModel").value;
+    myDiagram.model = go.Model.fromJson(json);
+    firewall = myDiagram.findNodeForKey(-1)
+    onLoadFirewallSizeInterfaces(firewall)
+    firewall.expandSubGraph();
 }

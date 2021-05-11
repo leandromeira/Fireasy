@@ -66,7 +66,7 @@ function validateInterfaces(){
 
 function validateHosts(){
     hosts = myDiagram.findNodesByExample({category: "Host"});
-    if(hosts === null) return;
+    if(hosts.count == 0) return;
     it = hosts.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Host must have a valid name");
@@ -77,7 +77,7 @@ function validateHosts(){
 
 function validateNetworks(){
     network = myDiagram.findNodesByExample({category: "Network"});
-    if(network === null) return;
+    if(network.count == 0) return;
     it = network.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Network must have a valid name");
@@ -88,7 +88,7 @@ function validateNetworks(){
 
 function validateHostsList(){
     hosts_list = myDiagram.findNodesByExample({category: "Hosts"});
-    if(hosts_list === null) return;
+    if(hosts_list.count == 0) return;
     it = hosts_list.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Host must have a valid name");
@@ -98,7 +98,7 @@ function validateHostsList(){
 
 function validateInternets(){
     internets = myDiagram.findNodesByExample({category: "Internet"});
-    if(internets === null) return;
+    if(internets.count == 0) return;
     it = internets.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Internet must have a valid name");
@@ -107,7 +107,7 @@ function validateInternets(){
 
 function validateIncomingTraffics(){
     incoming_traffics = myDiagram.findLinksByExample({category: "TrafegoEntrada"});
-    if(incoming_traffics === null) return;
+    if(incoming_traffics.count == 0) return;
     it = incoming_traffics.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Incoming Traffic must have a valid name");
@@ -118,7 +118,7 @@ function validateIncomingTraffics(){
 
 function validateOutgoingTraffic(){
     outgoing_traffics = myDiagram.findLinksByExample({category: "TrafegoSaida"});
-    if(outgoing_traffics === null) return;
+    if(outgoing_traffics.count == 0) return;
     it = outgoing_traffics.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Outgoing Traffic must have a valid name");
@@ -129,7 +129,7 @@ function validateOutgoingTraffic(){
 
 function validateBlockTraffic(){
     block_traffics = myDiagram.findLinksByExample({category: "TrafegoBloqueio"});
-    if(block_traffics === null) return;
+    if(block_traffics.count == 0) return;
     it = block_traffics.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Block Traffic must have a valid name");
@@ -142,7 +142,7 @@ function validateBlockTraffic(){
 
 function validateRedirectTraffics(){
     redirect_traffics = myDiagram.findLinksByExample({category: "TrafegoRedirecionamento"});
-    if(redirect_traffics === null) return;
+    if(redirect_traffics.count == 0) return;
     it = redirect_traffics.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Redirect Traffic must have a valid name");
@@ -154,11 +154,91 @@ function validateRedirectTraffics(){
 
 function validateNATTraffic(){
     outgoing_traffics = myDiagram.findLinksByExample({category: "TrafegoTraducao"});
-    if(outgoing_traffics === null) return;
+    if(outgoing_traffics.count == 0) return;
     it = outgoing_traffics.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("NAT Traffic must have a valid name");
         if(it.value.data["Destiny Port"] == "") alert("NAT Traffic must have a valid Destiny Port");
         if(it.value.data["Traffic IDs"] == "") alert("NAT Traffic must have at least one Incoming Traffic");
+    }
+}
+
+function validateUniqueName(node, value){
+    category = node.category;
+    if(isNaN(value)==false) {
+        alert("Name can't be a number");
+        return false;
+    }
+    if(value.includes(",")){
+        alert("Name can't contain a comma \",\"");
+        return false;
+    }
+    switch (category) {
+        case 'Interface':
+            interfaces = myDiagram.findNodesByExample({category: "Interface"});
+            it = interfaces.iterator;
+            count=0;
+            while(it.next()){
+                if(it.value.data.text == value) count++;
+            }
+            if(count>1) {
+                alert("Interface name must be unique");
+                return false;
+            }
+            return true;
+            break;
+        case 'Host':
+            hosts = myDiagram.findNodesByExample({category: "Host"});
+            it = hosts.iterator;
+            count=0;
+            while(it.next()){
+                if(it.value.data.text == value) count++;
+            }
+            if(count>1) {
+                alert("Host name must be unique");
+                return false;
+            }
+            return true;
+            break;
+        case 'Network':
+            networks = myDiagram.findNodesByExample({category: "Network"});
+            it = networks.iterator;
+            count=0;
+            while(it.next()){
+                if(it.value.data.text == value) count++;
+            }
+            if(count>1) {
+                alert("Network name must be unique");
+                return false;
+            }
+            return true;
+            break;
+        case 'Hosts':
+            hostslist = myDiagram.findNodesByExample({category: "Hosts"});
+            it = hostslist.iterator;
+            count=0;
+            while(it.next()){
+                if(it.value.data.text == value) count++;
+            }
+            if(count>1) {
+                alert("Host List name must be unique");
+                return false;
+            }
+            return true;
+            break;
+        case 'Internet':
+            internets = myDiagram.findNodesByExample({category: "Internet"});
+            it = internets.iterator;
+            count=0;
+            while(it.next()){
+                if(it.value.data.text == value) count++;
+            }
+            if(count>1) {
+                alert("Internet name must be unique");
+                return false;
+            }
+            return true;
+            break;
+        default: return true;
     }
 }

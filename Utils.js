@@ -56,7 +56,7 @@ function getHosts(){
     it = hosts.iterator;
     while(it.next()){
         //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
-        choices.push(it.value.data["text"]+" - "+it.value.data["IP"]);
+        choices.push(it.value.data["text"]/*+" - "+it.value.data["IP"]*/);
     }
     return choices;
 }
@@ -89,7 +89,6 @@ function addInterface() {
     var firewall = myDiagram.selection.first();
     myDiagram.startTransaction("make new interface");
     resizeFirewallUp(firewall);
-
     myDiagram.model.addNodeData(
         {
             category: "Interface",
@@ -101,7 +100,7 @@ function addInterface() {
             "Device Name": "",
             "IP": "",
             "Netmask": "",
-            "Firewall Name":  ""
+            "Firewall Name":  firewall.data.text
         }
     );
     interface_count++;
@@ -127,4 +126,31 @@ function resizeFirewallDown(interface){
             else shape.desiredSize = new go.Size(x-(5*count+1), y-(5*count+1));
         }
     }
+}
+
+function changeInterfacesFirewallName(name){
+    interfaces = myDiagram.findNodesByExample({category: "Interface"});
+    it = interfaces.iterator;
+    while(it.next()){
+        //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
+        it.value.data["Firewall Name"] = name
+    }
+}
+
+function onLoadFirewallSizeInterfaces(firewall){
+    interfaces = firewall.memberParts.count;
+    console.log(interfaces)
+    if(interfaces == 1){
+        firewall.setProperties({
+            "placeholder.alignment": go.Spot.BottomLeft
+        });
+        return;
+    }
+    firewall.layout = new go.CircularLayout;
+    firewall.layout.radius = 70;
+    if(interfaces >4) {
+        firewall.layout.startAngle = 0;
+        return;
+    }
+    firewall.layout.startAngle = 45;
 }

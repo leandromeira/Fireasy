@@ -134,9 +134,9 @@ function initializeGroupTemplates(){
                         cursor: "pointer",
                         portId: "",
                     },
-                    new go.Binding("desiredSize", "size"),
                     new go.Binding("fill", "Fill Color"),
-                    new go.Binding("stroke", "Stroke Color")
+                    new go.Binding("stroke", "Stroke Color"),
+                    new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
                 ),
                 $(go.TextBlock, "Firewall", textNodeStyle()),
                 $(go.Placeholder,    // represents the area of all member parts,
@@ -392,7 +392,7 @@ function textNodeStyle() {
             //maxSize: new go.Size(160, NaN),
             wrap: go.TextBlock.WrapFit,
             overflow: go.TextBlock.OverflowEllipsis,
-            editable: true,
+            editable: false,
             textAlign: "center",
             alignment: go.Spot.Center,
             isMultiline: true
@@ -441,7 +441,8 @@ function nodeShapeStyle(){
             toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
         },
         new go.Binding("fill", "Fill Color"),
-        new go.Binding("stroke", "Stroke Color")
+        new go.Binding("stroke", "Stroke Color"),
+        new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
 
     ]
 }
