@@ -537,7 +537,6 @@ Inspector.prototype.updateAllHTML = function() {
       var input = inspectedProps[name];
       var propertyValue = data[name];
       if (input instanceof HTMLSelectElement) {
-        console.log("teste")
         var decProp = this.declaredProperties[name];
         this.updateSelect(decProp, input, name, propertyValue);
       } else if (input.type === "color") {

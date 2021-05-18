@@ -17,6 +17,7 @@
     <script src="Validation.js"></script>
     <script src="TranslateMetaSPML.js"></script>
     <script src="ObjectifyMetaSPML.js"></script>
+    <script src="TranslateToPacketFilter.js"></script>
     <script src="Estrutura/Firewall.js"></script>
     <script src="Estrutura/Host.js"></script>
     <script src="Estrutura/Hosts.js"></script>
@@ -36,14 +37,18 @@
         <div id="DiagramDiv" style="flex-grow: 1; height: 750px; background-color: white;"></div>
         <span style="display: inline-block; vertical-align: top; padding: 2px; width:300px; ">
             <div id="InspectorDiv" class="inspector"></div>
+            <div id="InspectorDivColors" class="inspector"></div>
         </span>
     </div>
 
-    <button id="translate" onclick="Translate()">Translate</button>
     <button id="Load Example" onclick="Load()">Load from Json</button>
+    <button id="translate" onclick="Translate()">Translate</button>    
+    <button id="Packet Filter" onclick="TranslatePacketFilter()">Translate to Packet Filter</button>
     Diagram Model in JSON format:
     <textarea id="JsonModel" style="width:100%;height:300px"> </textarea>
     Diagram Model in SPML metalanguage:
     <textarea id="SPMLModel" style="width:100%;height:300px"> </textarea>
+    Packet-filter rules:
+    <textarea id="Packetfilter-rules" style="width:100%;height:300px"> </textarea>
 </body>
 </html>

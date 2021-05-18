@@ -5,6 +5,7 @@ var defaultNodeFillColor = "#282c34";
 var defaultNodeStrokeColor= "#00A9C9";
 var defaultTextcolor= "white";
 var traffic_in_ids=1;
+var traffic_out_ids=1;
 var traffic_blk_ids=1;
 var host_count = 1;
 var network_count = 1;
@@ -16,6 +17,17 @@ var outgoing_traffic_count = 1;
 var block_traffic_count = 1;
 var myPallet;
 var myInspector;
+var myInspectorColors;
+
+var firewall;
+var interfaces;
+var hosts;
+var unknown_networks;
+var networks;
+var hosts_list;
+var incoming_traffics;
+var outgoing_traffics;
+var block_traffics;
 
 function init() {
 
@@ -34,6 +46,7 @@ function init() {
 
     myPallet = addPallet();
     myInspector = addInspector();
+    myInspectorColors = addInspectorColors();
 
     defineListeners();
 
@@ -93,6 +106,15 @@ CustomLinkingTool.prototype.doStop = function() {
 };
 // end CustomLinkingTool
 
+function Load(){
+    //json = myDiagram.model.toJson();
+    json = document.getElementById("JsonModel").value;
+    myDiagram.model = go.Model.fromJson(json);
+    firewall = myDiagram.findNodeForKey(-1)
+    onLoadFirewallSizeInterfaces(firewall)
+    firewall.expandSubGraph();
+}
+
 function Translate() {
     //validateAllFields();
     json = myDiagram.model.toJson();
@@ -103,11 +125,9 @@ function Translate() {
     myDiagram.isModified = false;
 }
 
-function Load(){
-    //json = myDiagram.model.toJson();
-    json = document.getElementById("JsonModel").value;
-    myDiagram.model = go.Model.fromJson(json);
-    firewall = myDiagram.findNodeForKey(-1)
-    onLoadFirewallSizeInterfaces(firewall)
-    firewall.expandSubGraph();
+
+
+function TranslatePacketFilter(){
+    var rules = TranslateToPacketFilter();
+    document.getElementById("Packetfilter-rules").value = rules;
 }

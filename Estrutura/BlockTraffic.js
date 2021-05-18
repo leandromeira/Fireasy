@@ -1,28 +1,22 @@
 class BlockTraffic {
-    constructor(id, id_stream, name, ip_version, inter, extern_entity_source, source_port, extern_entity_destiny, dest_port, protocol, ){
+    constructor(id, name, af, inter, extern_entity_source, source_port, extern_entity_destiny, dest_port, protocol){
         this.id = id;
-        this.id_stream = id_stream;
         this.name = name;
-        this.ip_version = ip_version;
+        this.af = af;
         this.inter = inter;
         this.extern_entity_source = extern_entity_source;
         this.source_port = source_port;
         this.extern_entity_destiny = extern_entity_destiny;
         this.dest_port = dest_port;
         this.protocol = protocol;
-        
-    }
-
-    setIdStream(id_stream){
-        this.id_stream = id_stream;
     }
 
     setName(name){
         this.name = name;
     }
 
-    setIpVersion(ip_version){
-        this.ip_version = ip_version;
+    setAf(af){
+        this.af = af;
     }
 
     setInterface(inter){
@@ -49,16 +43,12 @@ class BlockTraffic {
         this.protocol = protocol;
     }    
 
-    getIdStream(){
-        return this.id_stream;
-    }
-
     getName(){
         return this.name;
     }
 
-    getIpVersion(){
-        return this.ip_version;
+    getAf(){
+        return this.af;
     }
 
     getInterface(){

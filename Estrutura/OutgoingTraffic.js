@@ -1,12 +1,11 @@
 class OutgoingTraffic {
-    constructor(id, name, inter, extern_entity, dest_port, network_translate, traffic_ids){
-        this.id = id;
+    constructor(name, inter, extern_entity, dest_port, nat, incoming_traffics){
         this.name = name;
         this.inter = inter;
         this.extern_entity = extern_entity;
         this.dest_port = dest_port;
-        this.network_translate = network_translate;
-        this.traffic_ids = traffic_ids;
+        this.nat = nat;
+        this.incoming_traffics = incoming_traffics;
     }
 
     setName(name){
@@ -25,12 +24,12 @@ class OutgoingTraffic {
         this.dest_port = dest_port;
     }
 
-    setNetworkTranslate(network_translate){
-        this.network_translate = network_translate;
+    setNat(nat){
+        this.nat = nat;
     }
 
-    setTrafficIds(traffic_ids){
-        this.traffic_ids = traffic_ids;
+    setIncomingTraffics(traffic_ids){
+        this.incoming_traffics = incoming_traffics;
     }
     
     getName(){
@@ -49,15 +48,12 @@ class OutgoingTraffic {
         return this.dest_port;
     }
 
-    getNetworkTranslate(){
-        return this.network_translate;
+    getNat(){
+        return this.nat;
     }
 
-    getTrafficIds(){
-        return this.traffic_ids;
+    getIncomingTraffics(){
+        return this.incoming_traffics;
     }
 
-    getId(){
-        return this.id;
-    }
 }

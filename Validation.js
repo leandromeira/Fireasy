@@ -15,7 +15,7 @@ function validateDeviceName(inputText){
 
 function validateIPaddress(inputText){
     var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    if(!inputText.match(ipformat)) return false;
+    if(!inputText.match(ipformat) || inputText.match("any")) return false;
     return true;
 }
 
@@ -133,7 +133,7 @@ function validateBlockTraffic(){
     it = block_traffics.iterator;
     while(it.next()){
         if(it.value.data.text == "") alert("Block Traffic must have a valid name");
-        if(it.value.data["Destiny Entities"] == "") alert("Block Traffic must have at least one Destiny Entity");
+        if(it.value.data["Destiny Entity"] == "") alert("Block Traffic must have a Destiny Entity");
         if(it.value.data["Source Port"] == "") alert("Block Traffic must have a valid Source Port");
         if(it.value.data["Destiny Port"] == "") alert("Block Traffic must have a valid Destiny Port");
         if(it.value.data["Protocols"] == "") alert("Block Traffic must have at least one protocol");
@@ -169,8 +169,7 @@ function validateUniqueName(node, value){
         alert("Name can't be a number");
         return false;
     }
-    if(value.includes(",")){
-        alert("Name can't contain a comma \",\"");
+    if(validateCommaFreeName(node, value) == false){
         return false;
     }
     switch (category) {
@@ -241,4 +240,12 @@ function validateUniqueName(node, value){
             break;
         default: return true;
     }
+}
+
+function validateCommaFreeName(node, value){
+    if(value.includes(",")){
+        alert("Field can't contain a comma \",\"");
+        return false;
+    }
+    return true;
 }

@@ -2,14 +2,11 @@ function addInspector(){
     myInspector = new Inspector('InspectorDiv', myDiagram,
         {
             // uncomment this line to only inspect the named properties below instead of all properties on each object:
-            // includesOwnProperties: false,
+            includesOwnProperties: false,
             multipleSelection: false,
             properties: {
                 "text": {show: Inspector.showIfPresent, type: "string"},
                 "key": {readOnly: true, show: Inspector.showIfPresent},
-                "Fill Color": {show: Inspector.showIfNode, type: 'color', defaultValue: defaultNodeFillColor},
-                "Stroke Color": {show: Inspector.showIfNode, type: 'color', defaultValue: defaultNodeStrokeColor},
-                "Text Color": {show: Inspector.showIfNode, type: 'color', defaultValue: defaultTextcolor},
                 "figure": {show: false},
                 "category": {show: Inspector.showIfLink, readOnly: true},
                 "to": {show: Inspector.showIfLink},
@@ -17,7 +14,6 @@ function addInspector(){
                 "size": {show: false},
                 "isGroup": {show: false},
                 "placeholder.alignment": {show: false},
-                "Default Colors": {show: Inspector.showIfNode, type: "checkbox", defaultValue: false},
                 "Default Policy": { show: Inspector.showIfPresent, type: "select", choices: ["block", "permit"], defaultValue: "block"},
                 "Device Name": {show: Inspector.showIfPresent, type: "text", defaultValue: ""},
                 "IP": {show: Inspector.showIfPresent, type: "text", defaultValue: ""},
@@ -28,12 +24,12 @@ function addInspector(){
                 "Interface": {show: Inspector.showIfPresent, readOnly: true},
                 "External Entity": {show: Inspector.showIfPresent, readOnly: true},
                 "Source Entity": {show: Inspector.showIfPresent, readOnly: true},
-                "Destiny Entities": {show: Inspector.showIfPresent, type: "select-multiple", choices: getEntities},
+                "Destiny Entity": {show: Inspector.showIfPresent, type: "select", choices: getEntities},
                 "Source Port": {show: Inspector.showIfPresent},
                 "Redirect Port": {show: Inspector.showIfPresent},
                 "Destiny Port": {show: Inspector.showIfPresent},
                 "NAT": {show: Inspector.showIfPresent, type: "checkbox", /*readOnly: true,*/ defaultValue: false},
-                "Traffic IDs": {show: Inspector.showIfPresent, type: "select-multiple", choices: trafficIDs},
+                "Incoming Traffics": {show: Inspector.showIfPresent, type: "select-multiple", choices: trafficIDs},
                 "from": {show: false}, "to": {show: false},
                 "From": {show: Inspector.showIfPresent, readOnly: true},
                 "To": {show: Inspector.showIfPresent, readOnly: true},
@@ -49,23 +45,31 @@ function addInspector(){
     return myInspector;
 }
 
+function addInspectorColors(){
+    myInspector = new Inspector('InspectorDivColors', myDiagram,
+        {
+            // uncomment this line to only inspect the named properties below instead of all properties on each object:
+            includesOwnProperties: false,
+            multipleSelection: false,
+            properties: {
+                "Fill Color": {show: Inspector.showIfNode, type: 'color', defaultValue: defaultNodeFillColor},
+                "Stroke Color": {show: Inspector.showIfNode, type: 'color', defaultValue: defaultNodeStrokeColor},
+                "Text Color": {show: Inspector.showIfNode, type: 'color', defaultValue: defaultTextcolor},
+                "figure": {show: false},
+                "loc": {show: false},
+                "size": {show: false},
+                "isGroup": {show: false},
+                "placeholder.alignment": {show: false},
+                "Default Colors": {show: Inspector.showIfNode, type: "checkbox", defaultValue: false},
+            },
+            propertyModified: onPropertyChangedColors
+        });
+
+    return myInspector;
+}
+
 function onPropertyChanged(property, value, inspec){
-    if(property === "Default Colors"){
-        if(value === true){
-            var node = myDiagram.selection.first();
-            myDiagram.startTransaction("restart colors");
-            myDiagram.model.setDataProperty(node.data, "Fill Color", defaultNodeFillColor);
-            myDiagram.model.setDataProperty(node.data, "Stroke Color", defaultNodeStrokeColor);
-            myDiagram.model.setDataProperty(node.data, "Text Color", defaultTextcolor);
-            myDiagram.commitTransaction("restart colors");
-            setTimeout(function () {
-                myDiagram.startTransaction("change checkbox state");
-                myDiagram.model.setDataProperty(node.data, "Default Colors", false);
-                myDiagram.commitTransaction("change checkbox state");
-            }, 500);
-        }
-        return;
-    }
+    
     if(property === "NAT"){
         link = myDiagram.selection.first();
         if(value === true){
@@ -94,20 +98,35 @@ function onPropertyChanged(property, value, inspec){
             }
             return;
         }
+        if(!validatePort(value) || !validateCommaFreeName(node, value)) {
+            alert("You have entered an invalid Redirect Port!");
+            var node = myDiagram.selection.first();
+            myDiagram.startTransaction("clear Redirect Port");
+            myDiagram.model.setDataProperty(node.data, "Redirect Port", "");
+            myDiagram.commitTransaction("clear Redirect Port");
+            return;
+        }
         if(link.data["category"]==="TrafegoEntrada"){
             myDiagram.startTransaction("change link");
             myDiagram.model.setDataProperty(link.data, "category", "TrafegoRedirecionamento");
             link.setProperties({
                 "ID.text": link.data.ID
             })
-            // myDiagram.requestUpdate();
             myDiagram.commitTransaction("change link");
             return;
         }
     }
     if(property === "IP"){
-        if(value === "") return;
-        if(!validateIPaddress(value)) {
+        if(value.replace(/\s/g, '') === ""){
+            var node = myDiagram.selection.first();
+            if(node.category == "Host"){
+                myDiagram.startTransaction("clear IP");
+                myDiagram.model.setDataProperty(node.data, "IP", "any");
+                myDiagram.commitTransaction("clear IP");
+            }
+            return;
+        };
+        if(!validateIPaddress(value) || !validateCommaFreeName(node, value)) {
             alert("You have entered an invalid IP address!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear IP");
@@ -118,7 +137,7 @@ function onPropertyChanged(property, value, inspec){
     }
     if(property === "Netmask"){
         if(value === "") return;
-        if(!validateNetmask(value)) {
+        if(!validateNetmask(value) || !validateCommaFreeName(node, value)) {
             alert("You have entered an invalid netmask!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear Netmask");
@@ -129,7 +148,7 @@ function onPropertyChanged(property, value, inspec){
     }
     if(property === "Device Name"){
         if(value === "")return;
-        if(!validateDeviceName(value)){
+        if(!validateDeviceName(value) || !validateCommaFreeName(node, value)){
             alert("This interface name already exists!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear Device Name");
@@ -140,7 +159,7 @@ function onPropertyChanged(property, value, inspec){
     }
     if(property === "Prefix"){
         if(value === "") return;
-        if(!validateIPaddress(value)) {
+        if(!validateIPaddress(value) || !validateCommaFreeName(node, value)) {
             alert("You have entered an invalid Prefix address!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear Prefix");
@@ -150,34 +169,35 @@ function onPropertyChanged(property, value, inspec){
         }
     }
     if(property === "Source Port"){
-        if(value === "") return;
-        if(!validatePort(value)) {
+        if(value.replace(/\s/g, '') === "") {
+            var node = myDiagram.selection.first();
+            myDiagram.startTransaction("clear Source Port");
+            myDiagram.model.setDataProperty(node.data, "Source Port", "*");
+            myDiagram.commitTransaction("clear Source Port");
+            return;
+        }
+        if(!validatePort(value) || !validateCommaFreeName(node, value)) {
             alert("You have entered an invalid Source Port!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear Source Port");
-            myDiagram.model.setDataProperty(node.data, "Source Port", "");
+            myDiagram.model.setDataProperty(node.data, "Source Port", "*");
             myDiagram.commitTransaction("clear Source Port");
             return;
         }
     }
-    if(property === "Redirect Port"){
-        if(value === "") return;
-        if(!validatePort(value)) {
-            alert("You have entered an invalid Redirect Port!");
+    if(property === "Destiny Port"){
+        if(value.replace(/\s/g, '') === "") {
             var node = myDiagram.selection.first();
-            myDiagram.startTransaction("clear Redirect Port");
-            myDiagram.model.setDataProperty(node.data, "Redirect Port", "");
-            myDiagram.commitTransaction("clear Redirect Port");
+            myDiagram.startTransaction("clear Destiny Port");
+            myDiagram.model.setDataProperty(node.data, "Destiny Port", "*");
+            myDiagram.commitTransaction("clear Destiny Port");
             return;
         }
-    }
-    if(property === "Destiny Port"){
-        if(value === "") return;
-        if(!validatePort(value)) {
+        if(!validatePort(value) || !validateCommaFreeName(node, value)) {
             alert("You have entered an invalid Destiny Port!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear Destiny Port");
-            myDiagram.model.setDataProperty(node.data, "Destiny Port", "");
+            myDiagram.model.setDataProperty(node.data, "Destiny Port", "*");
             myDiagram.commitTransaction("clear Destiny Port");
             return;
         }
@@ -196,5 +216,53 @@ function onPropertyChanged(property, value, inspec){
             myDiagram.model.setDataProperty(node.data, "text", "");
             myDiagram.commitTransaction("clear text");
         }
+    }
+    if(property === "Incoming Traffics"){
+        var selects = [];
+        for(var i = 0; i < value.length; i++) {
+            selects.push(value[i][0]);
+        }
+        link = myDiagram.selection.first();
+        var intraffic = myDiagram.findLinksByExample({category: "TrafegoEntrada"} );
+        it = intraffic.iterator;
+        while(it.next()){ //verificar se removeu algum trafego de entrada
+            if(it.value.data["ID_out"]==link.data["ID"]){
+                if(selects.length==0){
+                    it.value.data["ID_out"] = null;
+                    continue;
+                } 
+                if(selects.includes(it.value.data["ID"])==false){
+                    it.value.data["ID_out"] = null;
+                }                
+            };
+        }
+        it.reset();
+        for(var i=0; i < selects.length; i++) {
+            while(it.next()){
+                if(it.value.data["ID"]==selects[i]){
+                    it.value.data["ID_out"] = link.data["ID"];
+                }                
+            }
+            it.reset();
+        }
+    }
+}
+
+function onPropertyChangedColors(property, value, inspec){
+    if(property === "Default Colors"){
+        if(value === true){
+            var node = myDiagram.selection.first();
+            myDiagram.startTransaction("restart colors");
+            myDiagram.model.setDataProperty(node.data, "Fill Color", defaultNodeFillColor);
+            myDiagram.model.setDataProperty(node.data, "Stroke Color", defaultNodeStrokeColor);
+            myDiagram.model.setDataProperty(node.data, "Text Color", defaultTextcolor);
+            myDiagram.commitTransaction("restart colors");
+            setTimeout(function () {
+                myDiagram.startTransaction("change checkbox state");
+                myDiagram.model.setDataProperty(node.data, "Default Colors", false);
+                myDiagram.commitTransaction("change checkbox state");
+            }, 500);
+        }
+        return;
     }
 }

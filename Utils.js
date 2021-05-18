@@ -40,12 +40,14 @@ function getEntities(){
 }
 
 function trafficIDs(){
-    links = myDiagram.findLinksByExample({category: "TrafegoEntrada"} );
+    var intraffic = myDiagram.findLinksByExample({category: "TrafegoEntrada"} );
+    var outtraffic = myDiagram.selection.first();
     choices = [];
-    it = links.iterator;
+    it = intraffic.iterator;
     while(it.next()){
         //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
-        choices.push(it.value.data["ID"]+" - "+it.value.data["text"]);
+        if(it.value.data["ID_out"] == outtraffic.data["ID"] || it.value.data["ID_out"] == null)
+            choices.push(it.value.data["ID"]+" - "+it.value.data["text"]);
     }
     return choices;
 }

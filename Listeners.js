@@ -34,14 +34,12 @@ function defineListeners(){
             hosts_count++;
         }
         if(e.subject.first().data.category === "Network"){
-            console.log(e.subject.first().data.text)
             e.subject.first().setProperties({
                 "TEXT.text": "Network"+network_count
             })
             network_count++;
         }
         if(e.subject.first().data.category === "Internet"){
-            console.log(e.subject.first().data.text)
             e.subject.first().setProperties({
                 "TEXT.text": "Internet"+internet_count
             })
@@ -93,19 +91,22 @@ function defineListeners(){
                 interface_device = tointerface.data["Device Name"];
                 myDiagram.model.setDataProperty(link, "Interface", to);
                 myDiagram.model.setDataProperty(link, "External Entity", from);
+                myDiagram.model.setDataProperty(link, "ID_out", null);
                 myDiagram.commitTransaction("Set Link Attrs");
                 break;
             case 'TrafegoSaida':
                 myDiagram.startTransaction("Set Link Attrs");
                 myDiagram.model.setDataProperty(link, "text","Outgoing Traffic "+outgoing_traffic_count);
                 outgoing_traffic_count++;
+                myDiagram.model.setDataProperty(link, "ID", traffic_out_ids);
+                traffic_out_ids++;
                 frominterface = myDiagram.findNodeForKey(myDiagram.model.getFromKeyForLinkData(link));
                 interface_device = frominterface.data["Device Name"];
                 myDiagram.model.setDataProperty(link, "Interface", from);
                 myDiagram.model.setDataProperty(link, "External Entity", to);
                 myDiagram.model.setDataProperty(link, "Destiny Port", "*");
                 myDiagram.model.setDataProperty(link, "NAT", false);
-                myDiagram.model.setDataProperty(link, "Traffic IDs", "");
+                myDiagram.model.setDataProperty(link, "Incoming Traffics", "");
                 myDiagram.commitTransaction("Set Link Attrs");
                 break;
             case 'TrafegoBloqueio':
@@ -122,7 +123,7 @@ function defineListeners(){
                 interface_device = tointerface.data["Device Name"];
                 myDiagram.model.setDataProperty(link, "Interface", to);
                 myDiagram.model.setDataProperty(link, "Source Entity", from);
-                myDiagram.model.setDataProperty(link, "Destiny Entities", "");
+                myDiagram.model.setDataProperty(link, "Destiny Entity", "");
                 myDiagram.model.setDataProperty(link, "Source Port", "*");
                 myDiagram.model.setDataProperty(link, "Destiny Port", "*");
                 myDiagram.model.setDataProperty(link, "Protocols", "");

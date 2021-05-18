@@ -2,7 +2,6 @@ var spml;
 
 function translateMetaSPML(json){
     jsonparsed = JSON.parse(json)
-    console.log(jsonparsed);
     spml = translateFirewall(jsonparsed);
     spml = spml.concat(translateInterfaces(jsonparsed));
     spml = spml.concat(translateHosts(jsonparsed));
@@ -18,7 +17,6 @@ function translateMetaSPML(json){
 
 function translateFirewall(json){
     nodearray = json['nodeDataArray'];
-    console.log(nodearray);
     for(i=0;i<nodearray.length;i++){
         if(nodearray[i].category == "Firewall") {
             fw = "fw("+nodearray[i].text+","+nodearray[i]["Default Policy"]+")\n";
@@ -113,12 +111,8 @@ function translateBlockTraffic(json){
             interface = myDiagram.findNodeForKey(linkarray[i].to);
             from = myDiagram.findNodeForKey(linkarray[i].from);
             linkslist = linkslist.concat("blk("+linkarray[i].ID+","+linkarray[i].text+","+linkarray[i].AF+","+
-                interface.data.text+","+from.data.text+","+linkarray[i]["Source Port"]);
-            console.log("destiny Entities: "+linkarray[i]["Destiny Entities"].length)
-            for(k=0;k<linkarray[i]["Destiny Entities"].length;k++){
-                linkslist = linkslist.concat(","+linkarray[i]["Destiny Entities"][k]);
-            }
-            linkslist = linkslist.concat(","+linkarray[i]["Destiny Port"]);
+                interface.data.text+","+from.data.text+","+linkarray[i]["Source Port"]+","+linkarray[i]["Destiny Entity"]+
+                ","+linkarray[i]["Destiny Port"]);
             for(j=0;j<linkarray[i]["Protocols"].length;j++){
                 linkslist = linkslist.concat(","+linkarray[i]["Protocols"][j].toLowerCase())
             }
@@ -139,8 +133,8 @@ function translateOutgoingTraffic(json){
                 linkarray[i]["Destiny Port"]);
             if(linkarray[i]["NAT"]==true) linkslist = linkslist.concat(",nat");
             else linkslist = linkslist.concat(",");
-            for(j=0;j<linkarray[i]["Traffic IDs"].length;j++){
-                linkslist = linkslist.concat(","+linkarray[i]["Traffic IDs"][j].substr(0,linkarray[i]["Traffic IDs"][j].indexOf(" ")))
+            for(j=0;j<linkarray[i]["Incoming Traffics"].length;j++){
+                linkslist = linkslist.concat(","+linkarray[i]["Incoming Traffics"][j].substr(0,linkarray[i]["Incoming Traffics"][j].indexOf(" ")))
             }
             linkslist = linkslist.concat(")\n");
         }

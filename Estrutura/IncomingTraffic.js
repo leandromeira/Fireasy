@@ -1,18 +1,14 @@
 class IncomingTraffic {
-    constructor(id, id_stream, name, inter, extern_entity, source_port, redirect_port, protocol, ip_version){
+    constructor(id, name, af, inter, extern_entity, source_port, redirect_port, protocols){
         this.id = id;
-        this.id_stream = id_stream;
         this.name = name;
+        this.af = af;
         this.inter = inter;
         this.extern_entity = extern_entity;
         this.source_port = source_port;
         this.redirect_port = redirect_port;
-        this.protocol = protocol;
-        this.ip_version = ip_version;
-    }
-
-    setIdStream(id_stream){
-        this.id_stream = id_stream;
+        this.protocols = protocols;
+        
     }
 
     setName(name){
@@ -35,16 +31,12 @@ class IncomingTraffic {
         this.redirect_port = redirect_port;
     }
 
-    setProtocol(protocol){
-        this.protocol = protocol;
+    setProtocols(protocols){
+        this.protocols = protocols;
     }
 
-    setIpVersion(ip_version){
-        this.ip_version = ip_version;
-    }
-
-    getIdStream(){
-        return this.id_stream;
+    setAf(af){
+        this.af = af;
     }
 
     getName(){
@@ -67,12 +59,12 @@ class IncomingTraffic {
         return this.redirect_port;
     }
 
-    getProtocol(){
-        return this.protocol;
+    getProtocols(){
+        return this.protocols;
     }
 
-    getIpVersion(){
-        return this.ip_version;
+    getAf(){
+        return this.af;
     }
 
     getId(){

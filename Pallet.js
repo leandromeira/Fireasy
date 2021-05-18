@@ -23,7 +23,7 @@ function addPallet(){
                     "Fill Color": defaultNodeFillColor,
                     "Stroke Color": defaultNodeStrokeColor,
                     "Text Color": defaultTextcolor,
-                    "IP": "",
+                    "IP": "any",
                     "Netmask": ""
                 },
                 {
