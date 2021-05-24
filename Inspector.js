@@ -24,7 +24,7 @@ function addInspector(){
                 "Interface": {show: Inspector.showIfPresent, readOnly: true},
                 "External Entity": {show: Inspector.showIfPresent, readOnly: true},
                 "Source Entity": {show: Inspector.showIfPresent, readOnly: true},
-                "Destiny Entity": {show: Inspector.showIfPresent, type: "select", choices: getEntities},
+                "Destiny Entity": {show: Inspector.showIfPresent, type: "select", choices: getEntities, defaultValue: ""},
                 "Source Port": {show: Inspector.showIfPresent},
                 "Redirect Port": {show: Inspector.showIfPresent},
                 "Destiny Port": {show: Inspector.showIfPresent},
@@ -98,7 +98,7 @@ function onPropertyChanged(property, value, inspec){
             }
             return;
         }
-        if(!validatePort(value) || !validateCommaFreeName(node, value)) {
+        if(!validatePort(value, "rdr") || !validateCommaFreeName(node, value)) {
             alert("You have entered an invalid Redirect Port!");
             var node = myDiagram.selection.first();
             myDiagram.startTransaction("clear Redirect Port");
@@ -223,7 +223,19 @@ function onPropertyChanged(property, value, inspec){
             selects.push(value[i][0]);
         }
         link = myDiagram.selection.first();
+        if(selects.length>0) {
+            myDiagram.startTransaction("Change ID_in tag");
+            myDiagram.model.setDataProperty(link.data, "ID_in", selects);
+            myDiagram.commitTransaction("Change ID_in tag");
+        }
+        if(selects.length==0){
+            myDiagram.startTransaction("Change ID_in tag");
+            myDiagram.model.setDataProperty(link.data, "ID_in", "");
+            myDiagram.commitTransaction("Change ID_in tag");
+        }
+        
         var intraffic = myDiagram.findLinksByExample({category: "TrafegoEntrada"} );
+        var rdrtraffics = myDiagram.findLinksByExample({category: "TrafegoRedirecionamento"} );
         it = intraffic.iterator;
         while(it.next()){ //verificar se removeu algum trafego de entrada
             if(it.value.data["ID_out"]==link.data["ID"]){
@@ -237,6 +249,29 @@ function onPropertyChanged(property, value, inspec){
             };
         }
         it.reset();
+        //adiciona o trafego de saida no ID_out do trafego de entrada
+        for(var i=0; i < selects.length; i++) {
+            while(it.next()){
+                if(it.value.data["ID"]==selects[i]){
+                    it.value.data["ID_out"] = link.data["ID"];
+                }                
+            }
+            it.reset();
+        }
+        it = rdrtraffics.iterator;
+        while(it.next()){ //verificar se removeu algum trafego de entrada
+            if(it.value.data["ID_out"]==link.data["ID"]){
+                if(selects.length==0){
+                    it.value.data["ID_out"] = null;
+                    continue;
+                } 
+                if(selects.includes(it.value.data["ID"])==false){
+                    it.value.data["ID_out"] = null;
+                }                
+            };
+        }
+        it.reset();
+        //adiciona o trafego de saida no ID_out do trafego de entrada
         for(var i=0; i < selects.length; i++) {
             while(it.next()){
                 if(it.value.data["ID"]==selects[i]){
@@ -246,6 +281,8 @@ function onPropertyChanged(property, value, inspec){
             it.reset();
         }
     }
+    
+
 }
 
 function onPropertyChangedColors(property, value, inspec){

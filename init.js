@@ -35,6 +35,7 @@ function init() {
     myDiagram = $(go.Diagram, "DiagramDiv", {
         allowLink: false,  // linking is only started via buttons, not modelessly;
         linkingTool: new CustomLinkingTool(),  // defined below to automatically turn on allowLink
+        "linkReshapingTool": new CurvedLinkReshapingTool(),
         "undoManager.isEnabled": true
     });
 
@@ -110,9 +111,17 @@ function Load(){
     //json = myDiagram.model.toJson();
     json = document.getElementById("JsonModel").value;
     myDiagram.model = go.Model.fromJson(json);
-    firewall = myDiagram.findNodeForKey(-1)
-    onLoadFirewallSizeInterfaces(firewall)
-    firewall.expandSubGraph();
+
+    firewall = myDiagram.findNodesByExample({category: "Firewall"});
+    if(firewall){
+        firewall = firewall.iterator.first();
+        onLoadFirewallSizeInterfaces(firewall)
+        firewall.expandSubGraph();
+
+        firewall_pallet = myPallet.findNodesByExample({category: "Firewall"});
+        firewall_pallet = firewall_pallet.iterator.first();
+        myPallet.model.setDataProperty(firewall_pallet,"visible",false);
+    }   
 }
 
 function Translate() {

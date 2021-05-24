@@ -15,7 +15,7 @@ class Interface {
         this.devicename = devicename;
     }
 
-    setIp(ip){
+    setIP(ip){
         this.ip = ip;
     }
 
@@ -35,7 +35,7 @@ class Interface {
         return this.devicename;
     }
 
-    getIp(){
+    getIP(){
         return this.ip;
     }
 

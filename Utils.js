@@ -16,6 +16,7 @@ function getEntities(){
     internet = myDiagram.findNodesByExample({category: "Internet"});
 
     choices = [];
+    choices.push("");
     it = hosts.iterator;
     while(it.next()){
         //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
@@ -41,9 +42,16 @@ function getEntities(){
 
 function trafficIDs(){
     var intraffic = myDiagram.findLinksByExample({category: "TrafegoEntrada"} );
+    var rdrtraffics = myDiagram.findLinksByExample({category: "TrafegoRedirecionamento"} );
     var outtraffic = myDiagram.selection.first();
     choices = [];
     it = intraffic.iterator;
+    while(it.next()){
+        //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
+        if(it.value.data["ID_out"] == outtraffic.data["ID"] || it.value.data["ID_out"] == null)
+            choices.push(it.value.data["ID"]+" - "+it.value.data["text"]);
+    }
+    it = rdrtraffics.iterator;
     while(it.next()){
         //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
         if(it.value.data["ID_out"] == outtraffic.data["ID"] || it.value.data["ID_out"] == null)
@@ -141,7 +149,6 @@ function changeInterfacesFirewallName(name){
 
 function onLoadFirewallSizeInterfaces(firewall){
     interfaces = firewall.memberParts.count;
-    console.log(interfaces)
     if(interfaces == 1){
         firewall.setProperties({
             "placeholder.alignment": go.Spot.BottomLeft

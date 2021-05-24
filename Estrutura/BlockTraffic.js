@@ -1,5 +1,5 @@
 class BlockTraffic {
-    constructor(id, name, af, inter, extern_entity_source, source_port, extern_entity_destiny, dest_port, protocol){
+    constructor(id, name, af, inter, extern_entity_source, source_port, extern_entity_destiny, dest_port, protocols){
         this.id = id;
         this.name = name;
         this.af = af;
@@ -8,7 +8,7 @@ class BlockTraffic {
         this.source_port = source_port;
         this.extern_entity_destiny = extern_entity_destiny;
         this.dest_port = dest_port;
-        this.protocol = protocol;
+        this.protocols = protocols;
     }
 
     setName(name){
@@ -39,8 +39,8 @@ class BlockTraffic {
         this.dest_port = dest_port;
     }
 
-    setProtocol(protocol){
-        this.protocol = protocol;
+    setProtocols(protocols){
+        this.protocols = protocols;
     }    
 
     getName(){
@@ -71,8 +71,8 @@ class BlockTraffic {
         return this.dest_port;
     }
 
-    getProtocol(){
-        return this.protocol;
+    getProtocols(){
+        return this.protocols;
     }
 
     getId(){

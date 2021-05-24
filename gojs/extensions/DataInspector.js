@@ -631,7 +631,9 @@ Inspector.prototype.updateAllProperties = function() {
         case 'spot': value = go.Spot.parse(value); break;
         case 'margin': value = go.Margin.parse(value); break;
         case 'checkbox': value = input.checked; break;
-        case 'select': value = decProp.choicesArray[input.selectedIndex]; break;
+        case 'select': value = decProp.choicesArray[input.selectedIndex];
+            //console.log(value)    
+            break;
         case 'select-multiple':
           value = []
           //tem que salvar os nomes dos campos selecionados

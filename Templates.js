@@ -160,13 +160,15 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.AvoidsNodes,
-                corner: 10 ,
-                toShortLength: 0,
+                curve: go.Link.Bezier, reshapable: true,
+                //routing: go.Link.AvoidsNodes,
+                //corner: 10 ,
+               // toShortLength: 0,
                 // a mouse-over highlights the link by changing the first main path shape's stroke:
                 mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            new go.Binding("curviness", "curviness").makeTwoWay(),
             $(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -188,15 +190,34 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 1
+            }),
             $(go.TextBlock, textLinkStyle(),                        // Link label
-                new go.Binding("text", "text")),
+                {
+                    segmentIndex: 1,
+                },    
+                new go.Binding("text", "text").makeTwoWay()),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 2,
+                    segmentFraction: -0.5
+            }),
             $(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID",
                     editable: false,
-                    segmentIndex: 1,
-                    segmentFraction: 0.5
-                })
+                    segmentIndex: 2,
+                    segmentFraction: -0.5
+                },
+                new go.Binding("text", "ID"))
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoSaida",
@@ -204,13 +225,15 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.AvoidsNodes,
-                corner: 10 ,
-                toShortLength: 0,
+                curve: go.Link.Bezier, reshapable: true,
+                //routing: go.Link.AvoidsNodes,
+                //corner: 10 ,
+                //toShortLength: 0,
                 // a mouse-over highlights the link by changing the first main path shape's stroke:
                 mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            new go.Binding("curviness", "curviness").makeTwoWay(),
             $(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -233,11 +256,36 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 2
+            }),
             $(go.TextBlock, textLinkStyle(),                     // Link label
                 {
-                    stroke: "blue"
+                    stroke: "blue",
+                    segmentIndex: 2
                 },
-                new go.Binding("text", "text"))
+                new go.Binding("text", "text").makeTwoWay()),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 1,
+                    segmentFraction: -0.5
+            }),
+            $(go.TextBlock, textLinkStyle(),
+                {
+                    name: "ID_in",
+                    stroke: "blue",
+                    editable: false,
+                    segmentIndex: 1,
+                    segmentFraction: -0.5
+                },
+                new go.Binding("text", "ID_in"))
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoBloqueio",
@@ -245,13 +293,15 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.AvoidsNodes,
-                corner: 10 ,
-                toShortLength: 0,
+                curve: go.Link.Bezier, reshapable: true,
+                //routing: go.Link.AvoidsNodes,
+                //corner: 10 ,
+                //toShortLength: 0,
                 // a mouse-over highlights the link by changing the first main path shape's stroke:
                 mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            new go.Binding("curviness", "curviness").makeTwoWay(),
             $(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -274,19 +324,36 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 1
+            }),
             $(go.TextBlock, textLinkStyle(),                        // Link label
                 {
-                    stroke: "red"
+                    stroke: "red",
+                    segmentIndex: 1,
                 },
-                new go.Binding("text", "text")),
+                new go.Binding("text", "text").makeTwoWay()),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 2,
+                    segmentFraction: -0.5
+            }),
             $(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID",
                     editable: false,
-                    segmentIndex: 1,
-                    segmentFraction: 0.5,
+                    segmentIndex: 2,
+                    segmentFraction: -0.5,
                     stroke: "red"
-                })
+                },
+                new go.Binding("text", "ID"))
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoRedirecionamento",
@@ -294,13 +361,15 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.AvoidsNodes,
-                corner: 10 ,
-                toShortLength: 0,
+                curve: go.Link.Bezier, reshapable: true,
+                //routing: go.Link.AvoidsNodes,
+                //corner: 10 ,
+                //toShortLength: 0,
                 // a mouse-over highlights the link by changing the first main path shape's stroke:
                 mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            new go.Binding("curviness", "curviness").makeTwoWay(),
             $(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -323,15 +392,34 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.TextBlock, textLinkStyle(),                        // Link label
-                new go.Binding("text", "text")),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 1
+            }),
+            $(go.TextBlock, textLinkStyle(),  
+                { 
+                    segmentIndex: 1,
+                },                      // Link label
+                new go.Binding("text", "text").makeTwoWay()),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 2,
+                    segmentFraction: -0.5
+            }),
             $(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID",
                     editable: false,
-                    segmentIndex: 3,
-                    segmentFraction: 0.5
-                })
+                    segmentIndex: 2,
+                    segmentFraction: -0.5
+                },
+                new go.Binding("text", "ID"))
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoTraducao",
@@ -339,13 +427,15 @@ function initializeLinkTemplates() {
             // default routing is go.Link.Normal
             // default corner is 0
             {
-                routing: go.Link.AvoidsNodes,
-                corner: 10 ,
-                toShortLength: 0,
+                curve: go.Link.Bezier, reshapable: true,
+                //routing: go.Link.AvoidsNodes,
+                //corner: 10 ,
+                //toShortLength: 0,
                 // a mouse-over highlights the link by changing the first main path shape's stroke:
                 mouseEnter: function(e, link) { link.elt(0).stroke = "rgba(0,90,156,0.3)"; },
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
+            new go.Binding("curviness", "curviness").makeTwoWay(),
             $(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -370,11 +460,36 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 2,
+            }),
             $(go.TextBlock, textLinkStyle(),                        // Link label
                 {
-                    stroke: "blue"
+                    stroke: "blue",
+                    segmentIndex: 2,
                 },
-                new go.Binding("text", "text"))
+                new go.Binding("text", "text").makeTwoWay()),
+            $(go.Shape,  // the label background, which becomes transparent around the edges
+                {
+                    fill: $(go.Brush, "Radial",
+                    { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+                    stroke: null,
+                    segmentIndex: 1,
+                    segmentFraction: -0.5
+            }),
+            $(go.TextBlock, textLinkStyle(),
+                {
+                    name: "ID_in",
+                    stroke: "blue",
+                    editable: false,
+                    segmentIndex: 1,
+                    segmentFraction: -0.5
+                },
+                new go.Binding("text", "ID_in"))
         ));
 }
 
@@ -404,7 +519,7 @@ function textNodeStyle() {
 
 function textLinkStyle(){
     return {
-        segmentOffset: new go.Point(0, -10),
+        //segmentOffset: new go.Point(0, -15),
         font: "bold 12pt serif"
     }
 }

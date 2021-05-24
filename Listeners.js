@@ -140,6 +140,7 @@ function defineListeners(){
                 interface_device = tointerface.data["Device Name"];
                 myDiagram.model.setDataProperty(link, "Interface", to);
                 myDiagram.model.setDataProperty(link, "External Entity", from);
+                myDiagram.model.setDataProperty(link, "ID_out", null);
                 myDiagram.commitTransaction("Set Link Attrs");
                 break;
             case 'TrafegoTraducao' :
@@ -162,6 +163,10 @@ function defineListeners(){
         if (!evt.isTransactionFinished) return;
         var txn = evt.object;  // a Transaction
         if (txn === null) return;
+
+        json = myDiagram.model.toJson();
+        document.getElementById("JsonModel").value = json;
+
         // iterate over all of the actual ChangedEvents of the Transaction
         txn.changes.each(function(e) {
             // ignore any kind of change other than adding/removing a node

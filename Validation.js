@@ -14,13 +14,15 @@ function validateDeviceName(inputText){
 }
 
 function validateIPaddress(inputText){
-    var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    if(!inputText.match(ipformat) || inputText.match("any")) return false;
-    return true;
+    //var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(inputText) || inputText == "any")
+        return true;
+    return false;
 }
 
-function validatePort(inputText){
-    if(inputText === "*") return true;
+function validatePort(inputText, type){
+    if(type == "rdr" && inputText === "*") return false;
+    if(inputText === "*" && type != "rdr") return true;
     intText = parseInt(inputText);
     if(intText<0 || intText > 65535 || isNaN(intText)) return false;
     return true;
