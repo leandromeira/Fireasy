@@ -6,52 +6,52 @@ function initializeNodeTemplates() {
 
     //HOSTS TEMPLATE
     myDiagram.nodeTemplateMap.add("Hosts",  // the category
-        $(go.Node, "Table", nodeStyle(),
+        $go(go.Node, "Table", nodeStyle(),
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
                 selectionAdornmentTemplate: commandsAdornment_IN
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            $(go.Panel, "Auto",
-                $(go.Shape, "DoubleRectangle", nodeShapeStyle()),
-                $(go.TextBlock, textNodeStyle())
+            $go(go.Panel, "Auto",
+                $go(go.Shape, "DoubleRectangle", nodeShapeStyle()),
+                $go(go.TextBlock, textNodeStyle())
             ),
         ));
 
     //NETWORK TEMPLATE
     myDiagram.nodeTemplateMap.add("Network",  // the category
-        $(go.Node, "Table", nodeStyle(),
+        $go(go.Node, "Table", nodeStyle(),
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
                 selectionAdornmentTemplate: commandsAdornment_IN
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            $(go.Panel, "Auto",
-                $(go.Shape, "RoundedRectangle", nodeShapeStyle()),
-                $(go.TextBlock, textNodeStyle())
+            $go(go.Panel, "Auto",
+                $go(go.Shape, "RoundedRectangle", nodeShapeStyle()),
+                $go(go.TextBlock, textNodeStyle())
             ),
         ));
 
     //NETWORK HOST
     myDiagram.nodeTemplateMap.add("Host",  // the category
-        $(go.Node, "Table", nodeStyle(),
+        $go(go.Node, "Table", nodeStyle(),
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
                 selectionAdornmentTemplate: commandsAdornment_IN
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            $(go.Panel, "Auto",
-                $(go.Shape, "Square", nodeShapeStyle()),
-                $(go.TextBlock, textNodeStyle())
+            $go(go.Panel, "Auto",
+                $go(go.Shape, "Square", nodeShapeStyle()),
+                $go(go.TextBlock, textNodeStyle())
             ),
         ));
 
     //INTERFACE TEMPLATE
     myDiagram.nodeTemplateMap.add("Interface",  // the category
-        $(go.Node, "Table", nodeStyle(),
+        $go(go.Node, "Table", nodeStyle(),
             {
                 resizable: false,
                 resizeObjectName: "SHAPE",
@@ -61,8 +61,8 @@ function initializeNodeTemplates() {
                 toSpot: go.Spot.LeftSide
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            $(go.Panel, "Auto",
-                $(go.Shape, "Rectangle",
+            $go(go.Panel, "Auto",
+                $go(go.Shape, "Rectangle",
                     {
                         name: "SHAPE",
                         // width: 70,
@@ -79,21 +79,21 @@ function initializeNodeTemplates() {
                     },
                 new go.Binding("fill", "Fill Color"),
                 new go.Binding("stroke", "Stroke Color")),
-                $(go.TextBlock, textNodeStyle())
+                $go(go.TextBlock, textNodeStyle())
             ),
         ));
 
     //INTERNET TEMPLATE
     myDiagram.nodeTemplateMap.add("Internet",
-        $(go.Node, "Table", nodeStyle(),
+        $go(go.Node, "Table", nodeStyle(),
             {
                 resizable: true,
                 resizeObjectName: "SHAPE",
                 selectionAdornmentTemplate: commandsAdornment_IN
             },
-            $(go.Panel, "Auto",
-                $(go.Shape, "Cloud",nodeShapeStyle()),
-                $(go.TextBlock, "Start", textNodeStyle())
+            $go(go.Panel, "Auto",
+                $go(go.Shape, "Cloud",nodeShapeStyle()),
+                $go(go.TextBlock, "Start", textNodeStyle())
             )
         ));
 
@@ -105,7 +105,7 @@ function initializeNodeTemplates() {
 
 function initializeGroupTemplates(){
     myDiagram.groupTemplateMap.add( "Firewall",
-        $(go.Group, go.Panel.Position,
+        $go(go.Group, go.Panel.Position,
             {
                 isSubGraphExpanded: false,  // only show the Group itself, not any of its members
                 ungroupable: false,
@@ -120,8 +120,8 @@ function initializeGroupTemplates(){
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             new go.Binding("visible","visible"),
-            $(go.Panel, "Spot", {},
-                $(go.Shape, "Circle",
+            $go(go.Panel, "Spot", {},
+                $go(go.Shape, "Circle",
                     {
                         name: "SHAPE",
                         // width: 70,
@@ -138,8 +138,8 @@ function initializeGroupTemplates(){
                     new go.Binding("stroke", "Stroke Color"),
                     new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
                 ),
-                $(go.TextBlock, "Firewall", textNodeStyle()),
-                $(go.Placeholder,    // represents the area of all member parts,
+                $go(go.TextBlock, "Firewall", textNodeStyle()),
+                $go(go.Placeholder,    // represents the area of all member parts,
                     {
                         name: "placeholder",
                         alignment: go.Spot.Center
@@ -156,7 +156,7 @@ function initializeGroupTemplates(){
 
 function initializeLinkTemplates() {
     myDiagram.linkTemplateMap.add("TrafegoEntrada",
-        $(go.Link,
+        $go(go.Link,
             // default routing is go.Link.Normal
             // default corner is 0
             {
@@ -169,20 +169,20 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
                 strokeWidth: 8
             }),  // thick undrawn path
             // the link path, a Shape
-            $(go.Shape, {
+            $go(go.Shape, {
                     isPanelMain: true,
                     strokeWidth: 3,
                     stroke: "black"
                 },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-            $(go.Shape,
+            $go(go.Shape,
                 {
                     toArrow: "Standard",
                     stroke: null,
@@ -190,38 +190,39 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
-                    segmentIndex: 1
+                    //segmentIndex: 1
             }),
-            $(go.TextBlock, textLinkStyle(),                        // Link label
+            $go(go.TextBlock, textLinkStyle(),                        // Link label
                 {
-                    segmentIndex: 1,
+                    //segmentIndex: 1,
                 },    
-                new go.Binding("text", "text").makeTwoWay()),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+                new go.Binding("text", "text").makeTwoWay())
+            /*,
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
                     segmentIndex: 2,
                     segmentFraction: -0.5
             }),
-            $(go.TextBlock, textLinkStyle(),
+            $go(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID",
                     editable: false,
                     segmentIndex: 2,
                     segmentFraction: -0.5
                 },
-                new go.Binding("text", "ID"))
+                new go.Binding("text", "ID"))*/
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoSaida",
-        $(go.Link,
+        $go(go.Link,
             // default routing is go.Link.Normal
             // default corner is 0
             {
@@ -234,20 +235,20 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
                 strokeWidth: 8
             }),  // thick undrawn path
             // the link path, a Shape
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 strokeWidth: 3,
                 stroke: "blue"
             },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-            $(go.Shape,
+            $go(go.Shape,
                 {
                     toArrow: "Standard",
                     stroke: "blue",
@@ -256,28 +257,29 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
-                    segmentIndex: 2
+                    //segmentIndex: 2
             }),
-            $(go.TextBlock, textLinkStyle(),                     // Link label
+            $go(go.TextBlock, textLinkStyle(),                     // Link label
                 {
                     stroke: "blue",
-                    segmentIndex: 2
+                    //segmentIndex: 2
                 },
-                new go.Binding("text", "text").makeTwoWay()),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+                new go.Binding("text", "text").makeTwoWay())
+            /*,
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
                     segmentIndex: 1,
                     segmentFraction: -0.5
             }),
-            $(go.TextBlock, textLinkStyle(),
+            $go(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID_in",
                     stroke: "blue",
@@ -285,11 +287,11 @@ function initializeLinkTemplates() {
                     segmentIndex: 1,
                     segmentFraction: -0.5
                 },
-                new go.Binding("text", "ID_in"))
+                new go.Binding("text", "ID_in"))*/
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoBloqueio",
-        $(go.Link,
+        $go(go.Link,
             // default routing is go.Link.Normal
             // default corner is 0
             {
@@ -302,20 +304,20 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
                 strokeWidth: 8
             }),  // thick undrawn path
             // the link path, a Shape
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 strokeWidth: 3,
                 stroke: "red"
             },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-            $(go.Shape,
+            $go(go.Shape,
                 {
                     toArrow: "Standard",
                     stroke: "red",
@@ -324,28 +326,29 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
-                    segmentIndex: 1
+                    //segmentIndex: 1
             }),
-            $(go.TextBlock, textLinkStyle(),                        // Link label
+            $go(go.TextBlock, textLinkStyle(),                        // Link label
                 {
                     stroke: "red",
-                    segmentIndex: 1,
+                    //segmentIndex: 1,
                 },
-                new go.Binding("text", "text").makeTwoWay()),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+                new go.Binding("text", "text").makeTwoWay())
+            /*,
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
                     segmentIndex: 2,
                     segmentFraction: -0.5
             }),
-            $(go.TextBlock, textLinkStyle(),
+            $go(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID",
                     editable: false,
@@ -353,11 +356,11 @@ function initializeLinkTemplates() {
                     segmentFraction: -0.5,
                     stroke: "red"
                 },
-                new go.Binding("text", "ID"))
+                new go.Binding("text", "ID"))*/
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoRedirecionamento",
-        $(go.Link,
+        $go(go.Link,
             // default routing is go.Link.Normal
             // default corner is 0
             {
@@ -370,13 +373,13 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
                 strokeWidth: 8
             }),  // thick undrawn path
             // the link path, a Shape
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 strokeDashArray: [5,5],
                 strokeWidth: 3,
@@ -384,7 +387,7 @@ function initializeLinkTemplates() {
             },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-            $(go.Shape,
+            $go(go.Shape,
                 {
                     toArrow: "Standard",
                     stroke: null,
@@ -392,38 +395,39 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
-                    segmentIndex: 1
+                    //segmentIndex: 1
             }),
-            $(go.TextBlock, textLinkStyle(),  
+            $go(go.TextBlock, textLinkStyle(),  
                 { 
-                    segmentIndex: 1,
+                    //segmentIndex: 1,
                 },                      // Link label
-                new go.Binding("text", "text").makeTwoWay()),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+                new go.Binding("text", "text").makeTwoWay())
+            /*,
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
                     segmentIndex: 2,
                     segmentFraction: -0.5
             }),
-            $(go.TextBlock, textLinkStyle(),
+            $go(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID",
                     editable: false,
                     segmentIndex: 2,
                     segmentFraction: -0.5
                 },
-                new go.Binding("text", "ID"))
+                new go.Binding("text", "ID"))*/
         ));
 
     myDiagram.linkTemplateMap.add("TrafegoTraducao",
-        $(go.Link,
+        $go(go.Link,
             // default routing is go.Link.Normal
             // default corner is 0
             {
@@ -436,13 +440,13 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
-            $(go.Shape, {
+            $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
                 strokeWidth: 8
             }),  // thick undrawn path
             // the link path, a Shape
-            $(go.Shape,
+            $go(go.Shape,
                 {
                     isPanelMain: true,
                     strokeDashArray: [5,5],
@@ -451,7 +455,7 @@ function initializeLinkTemplates() {
                 },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
-            $(go.Shape,
+            $go(go.Shape,
                 {
                     toArrow: "Standard",
                     stroke: "blue",
@@ -460,28 +464,29 @@ function initializeLinkTemplates() {
                     scale: 2
                 },
                 new go.Binding("fill", "color")),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
-                    segmentIndex: 2,
+                    //segmentIndex: 2,
             }),
-            $(go.TextBlock, textLinkStyle(),                        // Link label
+            $go(go.TextBlock, textLinkStyle(),                        // Link label
                 {
                     stroke: "blue",
-                    segmentIndex: 2,
+                    //segmentIndex: 2,
                 },
-                new go.Binding("text", "text").makeTwoWay()),
-            $(go.Shape,  // the label background, which becomes transparent around the edges
+                new go.Binding("text", "text").makeTwoWay())
+            /*,
+            $go(go.Shape,  // the label background, which becomes transparent around the edges
                 {
-                    fill: $(go.Brush, "Radial",
+                    fill: $go(go.Brush, "Radial",
                     { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
                     stroke: null,
                     segmentIndex: 1,
                     segmentFraction: -0.5
             }),
-            $(go.TextBlock, textLinkStyle(),
+            $go(go.TextBlock, textLinkStyle(),
                 {
                     name: "ID_in",
                     stroke: "blue",
@@ -489,7 +494,7 @@ function initializeLinkTemplates() {
                     segmentIndex: 1,
                     segmentFraction: -0.5
                 },
-                new go.Binding("text", "ID_in"))
+                new go.Binding("text", "ID_in"))*/
         ));
 }
 

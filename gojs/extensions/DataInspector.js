@@ -166,6 +166,25 @@ Inspector.prototype.inspectObject = function(object) {
       var desc = declaredProperties[name];
       if (!this.canShowProperty(name, desc, inspectedObject)) continue;
       var val = this.findValue(name, desc, data);
+      //verifica os textos dos trafegos, e oculta os IDs na hora de mostrar
+      if(name=="text"){
+        if(inspectedObject.category == "TrafegoEntrada" || inspectedObject.category == "TrafegoBloqueio" || inspectedObject.category == "TrafegoRedirecionamento"){
+          var val2 = val.split("|");
+          val2 = val2[1]
+          val2 = val2.substring(1, val2.length)
+          val = val2;
+        }
+        if(inspectedObject.category == "TrafegoSaida" || inspectedObject.category == "TrafegoTraducao"){
+          var aux = val.includes("|");
+          if(aux == true){
+            var val2 = val.split("|");
+            val2 = val2[0]
+            val2 = val2.substring(0, val2.length-1)
+            val = val2;
+          }
+        }
+      }
+      
       tbody.appendChild(this.buildPropertyRow(name, val));
     }
     // Go through all the properties on the model data and show them, if appropriate:

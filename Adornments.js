@@ -1,20 +1,20 @@
 function defineAdornments(){
     firewallAdornment =
-        $("ContextMenu",
-            $(go.Panel, "Auto",
-                $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
-                $(go.Placeholder)
+        $go("ContextMenu",
+            $go(go.Panel, "Auto",
+                $go(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
+                $go(go.Placeholder)
             ),
             new go.Binding("visible", "", isPallet).ofObject(),
-            $(go.Panel, "Horizontal",
+            $go(go.Panel, "Horizontal",
                 {defaultStretch: go.GraphObject.Vertical, scale: 1.1},
-                $("Button",
-                    $(go.Shape,
+                $go("Button",
+                    $go(go.Shape,
                         {
                             figure: "Rectangle", width: 15, height: 20,
                             fill: null, stroke: "black", margin: 0, strokeWidth: 3
                         }),
-                    $(go.TextBlock, "+",
+                    $go(go.TextBlock, "+",
                         {
                             margin: 8,
                             maxSize: new go.Size(160, NaN),
@@ -30,16 +30,16 @@ function defineAdornments(){
         );
 
     commandsAdornment_IN =
-        $("ContextMenu",
-            $(go.Panel, "Auto",
-                $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
-                $(go.Placeholder)
+        $go("ContextMenu",
+            $go(go.Panel, "Auto",
+                $go(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
+                $go(go.Placeholder)
             ),
             new go.Binding("visible", "", isPallet).ofObject(),
-            $(go.Panel, "Horizontal",
+            $go(go.Panel, "Horizontal",
                 {defaultStretch: go.GraphObject.Vertical, scale: 1.1},
-                $("Button",
-                    $(go.Shape,
+                $go("Button",
+                    $go(go.Shape,
                         {
                             geometryString: "m 0 2 c 14 0 14 0 14 0 z M 6 0 F V 4 l -3 -2 z",
                             fill: "#000000", stroke: "black", strokeWidth: 1.5, margin: 0, scale: 1.5
@@ -47,8 +47,8 @@ function defineAdornments(){
                     {click: startLinkIn, toolTip: makeTooltip("Liberar tráfego de entrada")},
                     new go.Binding("visible", "", canStartLink).ofObject()
                 ),
-                $("Button",
-                    $(go.Shape,
+                $go("Button",
+                    $go(go.Shape,
                         {
                             geometryString: "m 0 2 c 14 0 14 0 14 0 z M 6 0 F V 4 l -3 -2 z",
                             fill: "red", stroke: "red", strokeWidth: 1.5, margin: 0, scale: 1.5
@@ -60,16 +60,16 @@ function defineAdornments(){
         );
 
     commandsAdornment_OUT =
-        $("ContextMenu",
-            $(go.Panel, "Auto",
-                $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
-                $(go.Placeholder)
+        $go("ContextMenu",
+            $go(go.Panel, "Auto",
+                $go(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 2, shadowVisible: true}),
+                $go(go.Placeholder)
             ),
             new go.Binding("visible", "", isPallet).ofObject(),
-            $(go.Panel, "Horizontal",
+            $go(go.Panel, "Horizontal",
                 {defaultStretch: go.GraphObject.Vertical, scale: 1.1},
-                $("Button",
-                    $(go.Shape,
+                $go("Button",
+                    $go(go.Shape,
                         {
                             geometryString: "m 0 2 c 14 0 14 0 14 0 z M 8 0 F V 4 l 3 -2.0271 z",
                             fill: "blue", stroke: "blue", strokeWidth: 1.5, margin: 0, scale: 1.5

@@ -30,6 +30,8 @@ function translateTrafficsPF(){
 
 function translateIncomingTrafficPF(incoming_traffic){
     if(incoming_traffic.getRedirectPort() == ""){
+        outgoing_traffic = findOutTraffic(incoming_traffic);
+        if(typeof outgoing_traffic == "undefined") return "";
         var traffic = "pass in on "+incoming_traffic.getInterface().getDeviceName()+" "+
             incoming_traffic.getAf()+" proto { "+incoming_traffic.getProtocols()+" } from ";
         from = incoming_traffic.getExternEntity().constructor.name;
@@ -38,7 +40,7 @@ function translateIncomingTrafficPF(incoming_traffic){
             traffic = traffic.concat(" port "+incoming_traffic.getSourcePort());
         }
         traffic = traffic.concat(" to ");
-        outgoing_traffic = findOutTraffic(incoming_traffic);
+        
         to = outgoing_traffic.getExternEntity().constructor.name;
         traffic = traffic.concat(translateIPs(to,outgoing_traffic.getExternEntity()));
         if(outgoing_traffic.getDestPort() != "*"){
@@ -74,6 +76,7 @@ function translateIncomingTrafficPF(incoming_traffic){
 
 function translateOutgoingTrafficPF(outgoing_traffic){
     var traffic = "";
+    if(outgoing_traffic.getIncomingTraffics().length == 0) return "";
     for(var i=0;i<outgoing_traffic.getIncomingTraffics().length;i++){
         incoming_traffic = outgoing_traffic.getIncomingTraffics()[i];
         traffic = traffic.concat("pass out on "+outgoing_traffic.getInterface().getDeviceName()+" "+

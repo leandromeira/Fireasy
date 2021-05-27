@@ -1,12 +1,19 @@
-var $;
+var $go;
 var myDiagram;
 var commandsAdornment;
 var defaultNodeFillColor = "#282c34";
 var defaultNodeStrokeColor= "#00A9C9";
 var defaultTextcolor= "white";
+var myPallet;
+var myInspector;
+var myInspectorColors;
+
+//IDs
 var traffic_in_ids=1;
 var traffic_out_ids=1;
 var traffic_blk_ids=1;
+
+//Counters
 var host_count = 1;
 var network_count = 1;
 var hosts_count = 1;
@@ -15,10 +22,8 @@ var interface_count = 1;
 var incoming_traffic_count = 1;
 var outgoing_traffic_count = 1;
 var block_traffic_count = 1;
-var myPallet;
-var myInspector;
-var myInspectorColors;
 
+//Objects with structure
 var firewall;
 var interfaces;
 var hosts;
@@ -31,8 +36,8 @@ var block_traffics;
 
 function init() {
 
-    $ = go.GraphObject.make;
-    myDiagram = $(go.Diagram, "DiagramDiv", {
+    $go = go.GraphObject.make;
+    myDiagram = $go(go.Diagram, "DiagramDiv", {
         allowLink: false,  // linking is only started via buttons, not modelessly;
         linkingTool: new CustomLinkingTool(),  // defined below to automatically turn on allowLink
         "linkReshapingTool": new CurvedLinkReshapingTool(),
@@ -62,9 +67,9 @@ function init() {
     myDiagram.toolManager.linkingTool.linkValidation = canLink;
 
     var tempfromnode =
-        $(go.Node,
+        $go(go.Node,
             { layerName: "Tool" },
-            $(go.Shape, "RoundedRectangle",
+            $go(go.Shape, "RoundedRectangle",
                 { stroke: "chartreuse", strokeWidth: 3, fill: null,
                     portId: "", width: 1, height: 1 })
         );
@@ -72,9 +77,9 @@ function init() {
     myDiagram.toolManager.linkingTool.temporaryFromPort = tempfromnode.port;
 
     var temptonode =
-        $(go.Node,
+        $go(go.Node,
             { layerName: "Tool" },
-            $(go.Shape, "RoundedRectangle",
+            $go(go.Shape, "RoundedRectangle",
                 { stroke: "cyan", strokeWidth: 3, fill: null,
                     portId: "", width: 1, height: 1 })
         );
@@ -111,13 +116,12 @@ function Load(){
     //json = myDiagram.model.toJson();
     json = document.getElementById("JsonModel").value;
     myDiagram.model = go.Model.fromJson(json);
-
+    updateAllCounters();
     firewall = myDiagram.findNodesByExample({category: "Firewall"});
     if(firewall){
         firewall = firewall.iterator.first();
         onLoadFirewallSizeInterfaces(firewall)
         firewall.expandSubGraph();
-
         firewall_pallet = myPallet.findNodesByExample({category: "Firewall"});
         firewall_pallet = firewall_pallet.iterator.first();
         myPallet.model.setDataProperty(firewall_pallet,"visible",false);
@@ -125,7 +129,7 @@ function Load(){
 }
 
 function Translate() {
-    //validateAllFields();
+    if(document.getElementById("validation").checked) validateAllFields();
     json = myDiagram.model.toJson();
     document.getElementById("JsonModel").value = json;
     spml =  translateMetaSPML(json);
@@ -133,8 +137,6 @@ function Translate() {
     objectifyMetaSPML(spml);
     myDiagram.isModified = false;
 }
-
-
 
 function TranslatePacketFilter(){
     var rules = TranslateToPacketFilter();

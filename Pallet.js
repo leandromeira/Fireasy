@@ -1,7 +1,7 @@
 function addPallet(){
-    myPallet = $(go.Palette, "PaletteDiv",
+    myPallet = $go(go.Palette, "PaletteDiv",
         {
-            //layout: $(go.GridLayout),
+            //layout: $go(go.GridLayout),
             padding: new go.Margin(70, 0, 0, 10,), //Desvia da marca d'agua do goJS
             nodeTemplateMap: myDiagram.nodeTemplateMap,
             groupTemplateMap: myDiagram.groupTemplateMap,

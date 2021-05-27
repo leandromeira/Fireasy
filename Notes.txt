@@ -1,0 +1,30 @@
+Quando excluir 
+
+Firewall:
+    - Tem certeza que deseja excluir o firewall?
+    - se sim, deixa a operação acontecer, vão ficar só as entidades externas.
+
+Interface:
+    - Tem certeza que deseja excluir a interface?
+    - se sim, os tráfegos serão apagados automaticamente, mas tem que ir de um por um fazer as operações necessárias.
+
+Host:
+    - ver os tráfegos que ele tinha e fazer as operações necessárias
+    - verificar se ele participava de uma lista de hosts, se sim, retirar ele da lista.
+    - verificar se algum tráfego de bloqueio tinha como esse host como Destiny Entity, se sim, limpar o camp.
+
+Hosts, Network e Internet:
+    - ver os tráfegos que ele tinha e fazer as operações necessárias    
+
+Incoming Traffic:
+    - ver se tem algum tráfego de saída com ele atribuído.
+    - se sim, tirar ele da lista de IncomingTraffics do trafego de saída, e atualizar o text to tráfego de saída.
+
+Outgoing Traffic:
+    - ver se tem algum IncomingTraffic no campo dele.
+    - se tiver, percorrer um por um, pegar o incoming traffic e atualizar a variável id_out dele pra null.
+
+Block Traffic:
+    - apenas apagar.
+
+    

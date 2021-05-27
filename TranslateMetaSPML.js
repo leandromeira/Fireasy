@@ -92,7 +92,10 @@ function translateIncomingTraffic(json){
         if(linkarray[i].category == "TrafegoEntrada" || linkarray[i].category == "TrafegoRedirecionamento") {
             interface = myDiagram.findNodeForKey(linkarray[i].to);
             from = myDiagram.findNodeForKey(linkarray[i].from);
-            linkslist = linkslist.concat("it("+linkarray[i].ID+","+linkarray[i].text+","+linkarray[i].AF+","+
+            text = linkarray[i].text.split("|");
+            text = text[1];
+            text = text.substring(1, text.length);
+            linkslist = linkslist.concat("it("+linkarray[i].ID+","+text+","+linkarray[i].AF+","+
                 interface.data.text+","+from.data.text+","+linkarray[i]["Source Port"]+","+linkarray[i]["Redirect Port"]);
             for(j=0;j<linkarray[i]["Protocols"].length;j++){
                 linkslist = linkslist.concat(","+linkarray[i]["Protocols"][j].toLowerCase())
@@ -110,7 +113,10 @@ function translateBlockTraffic(json){
         if(linkarray[i].category == "TrafegoBloqueio") {
             interface = myDiagram.findNodeForKey(linkarray[i].to);
             from = myDiagram.findNodeForKey(linkarray[i].from);
-            linkslist = linkslist.concat("blk("+linkarray[i].ID+","+linkarray[i].text+","+linkarray[i].AF+","+
+            text = linkarray[i].text.split("|");
+            text = text[1];
+            text = text.substring(1, text.length);
+            linkslist = linkslist.concat("blk("+linkarray[i].ID+","+text+","+linkarray[i].AF+","+
                 interface.data.text+","+from.data.text+","+linkarray[i]["Source Port"]+","+linkarray[i]["Destiny Entity"]+
                 ","+linkarray[i]["Destiny Port"]);
             for(j=0;j<linkarray[i]["Protocols"].length;j++){
@@ -129,7 +135,13 @@ function translateOutgoingTraffic(json){
         if(linkarray[i].category == "TrafegoSaida" || linkarray[i].category == "TrafegoTraducao") {
             interface = myDiagram.findNodeForKey(linkarray[i].from);
             to = myDiagram.findNodeForKey(linkarray[i].to);
-            linkslist = linkslist.concat("ot("+linkarray[i].text+","+interface.data.text+","+to.data.text+","+
+            var text = linkarray[i].text;
+            if(linkarray[i].text.includes("|")){
+                text = linkarray[i].text.split("|");
+                text = text[0];
+                text = text.substring(0, text.length-1)
+            }            
+            linkslist = linkslist.concat("ot("+text+","+interface.data.text+","+to.data.text+","+
                 linkarray[i]["Destiny Port"]);
             if(linkarray[i]["NAT"]==true) linkslist = linkslist.concat(",nat");
             else linkslist = linkslist.concat(",");

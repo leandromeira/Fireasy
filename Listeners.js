@@ -64,6 +64,41 @@ function defineListeners(){
 
     });
 
+    myDiagram.addDiagramListener("SelectionDeleting", function (e) {
+        var it = e.subject.iterator;
+        var category;
+        while (it.next()) {
+            category = it.value.data.category;
+            switch (category){
+                case "Interface":
+
+                    break;
+                case "Host":
+
+                    break;
+                case "Hots":
+                case "Network":
+                case "Internet":
+                    
+                    break;
+                case "TrafegoEntrada":
+                case "TrafegoRedirecionamento":
+                    deletingIncomingTraffic(it.value.data);
+                    break;
+                case "TrafegoSaida":
+                case "TrafegoTraducao":
+                    deletingOutgoingTraffic(it.value.data);
+                    break;
+                default: break;
+            }
+        }
+
+        //console.log(e.subject.count);
+        if(e.subject.first().data.category == "Firewall"){
+           console.log("firewall")
+        }
+    });
+
     myDiagram.addDiagramListener("LinkDrawn", function (e) {
         link = e.subject.data;
         link2 = e.subject;
@@ -76,11 +111,11 @@ function defineListeners(){
         switch (link.category) {
             case 'TrafegoEntrada':
                 myDiagram.startTransaction("Set Link Attrs");
-                myDiagram.model.setDataProperty(link, "text","Incoming Traffic "+incoming_traffic_count);
+                myDiagram.model.setDataProperty(link, "text",traffic_in_ids+" | Incoming Traffic "+incoming_traffic_count);
                 incoming_traffic_count++;
-                link2.setProperties({
+                /*link2.setProperties({
                     "ID.text": traffic_in_ids
-                });
+                });*/
                 myDiagram.model.setDataProperty(link, "ID", traffic_in_ids);
                 traffic_in_ids++;
                 myDiagram.model.setDataProperty(link, "Source Port", "*");
@@ -111,11 +146,11 @@ function defineListeners(){
                 break;
             case 'TrafegoBloqueio':
                 myDiagram.startTransaction("Set Link Attrs");
-                myDiagram.model.setDataProperty(link, "text", "Block Incoming "+block_traffic_count);
+                myDiagram.model.setDataProperty(link, "text", traffic_blk_ids+" | "+"Block Incoming "+block_traffic_count);
                 block_traffic_count++;
-                link2.setProperties({
+                /*link2.setProperties({
                     "ID.text": traffic_blk_ids
-                });
+                });*/
                 myDiagram.model.setDataProperty(link, "ID",traffic_blk_ids);
                 traffic_blk_ids++;
                 myDiagram.model.setDataProperty(link, "AF", "inet");
