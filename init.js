@@ -7,6 +7,10 @@ var defaultTextcolor= "white";
 var myPallet;
 var myInspector;
 var myInspectorColors;
+var accordionJson;
+var accordionSPML;
+var accordionPacketFilter;
+
 
 //IDs
 var traffic_in_ids=1;
@@ -86,6 +90,26 @@ function init() {
     myDiagram.toolManager.linkingTool.temporaryToNode = temptonode;
     myDiagram.toolManager.linkingTool.temporaryToPort = temptonode.port;
 
+    accordionJson = $( function() {
+        $( "#json" ).accordion({
+            collapsible: true,         
+        });
+    } );
+
+    accordionSPML = $( function() {
+        $( "#SPML" ).accordion({
+            collapsible: true,
+            active: false
+        });
+    } );
+
+    accordionPacketFilter = $( function() {
+        $( "#PacketFilter" ).accordion({
+            collapsible: true,
+            active:false
+        });
+    } );
+
 }
 
 // This custom LinkingTool just turns on Diagram.allowLink when it starts,
@@ -117,6 +141,7 @@ function Load(){
     json = document.getElementById("JsonModel").value;
     myDiagram.model = go.Model.fromJson(json);
     updateAllCounters();
+    setEmptyHostNetmasks();
     firewall = myDiagram.findNodesByExample({category: "Firewall"});
     if(firewall){
         firewall = firewall.iterator.first();
@@ -130,15 +155,29 @@ function Load(){
 
 function Translate() {
     if(document.getElementById("validation").checked) validateAllFields();
-    json = myDiagram.model.toJson();
-    document.getElementById("JsonModel").value = json;
+    json = document.getElementById("JsonModel").value
     spml =  translateMetaSPML(json);
     document.getElementById("SPMLModel").value = spml;
     objectifyMetaSPML(spml);
+
+    
+
     myDiagram.isModified = false;
 }
 
 function TranslatePacketFilter(){
     var rules = TranslateToPacketFilter();
     document.getElementById("Packetfilter-rules").value = rules;
+}
+
+function LoadRules(){
+    var rules = document.getElementById("Packetfilter-rules").value
+    rules = clearCommentsAndEmptyLines(rules);
+    if(ObjectifyPacketFilter(rules) != null){
+        //document.getElementById("SPMLModel").value = spml;
+        //var json = parsePacketFilterToJson(rules);
+        //document.getElementById("JsonModel").value = json;
+    }
+    
+    
 }

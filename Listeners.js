@@ -71,15 +71,15 @@ function defineListeners(){
             category = it.value.data.category;
             switch (category){
                 case "Interface":
-
+                    deletingNode(it.value);
                     break;
                 case "Host":
-
+                    deletingHost(it.value);
                     break;
-                case "Hots":
+                case "Hosts":
                 case "Network":
                 case "Internet":
-                    
+                    deletingNode(it.value);
                     break;
                 case "TrafegoEntrada":
                 case "TrafegoRedirecionamento":
@@ -92,12 +92,23 @@ function defineListeners(){
                 default: break;
             }
         }
-
-        //console.log(e.subject.count);
-        if(e.subject.first().data.category == "Firewall"){
-           console.log("firewall")
-        }
+    
     });
+
+    myDiagram.commandHandler.canDeleteSelection = function(){
+        var sel = myDiagram.selection;
+        var it = sel.iterator;
+        while(it.next()){
+            if(it.value.data.category == "Firewall" || it.value.data.category == "Interface"){
+                res = window.confirm("There are some core etities in the selection, such as Firewall or Interface(s). Are you sure you want to delete them?");
+                if(res){
+                    return true;
+                };        
+                return false;
+            }
+        }
+        return true;
+    }
 
     myDiagram.addDiagramListener("LinkDrawn", function (e) {
         link = e.subject.data;

@@ -1,3 +1,7 @@
+const generic_json_header_firewall = "{ \"class\": \"GraphLinksModel\",\n  \"nodeDataArray\": [\n{\"category\":\"Firewall\", \"text\":\"Firewall\", \"isGroup\":true, \"visible\":true, \"placeholder.alignment\":{\"class\":\"go.Spot\",\"x\":0.5, \"y\":0.5, \"offsetX\":0, \"offsetY\":0}, \"Fill Color\":\"#282c34\", \"Stroke Color\":\"#00A9C9\", \"Text Color\":\"white\", \"key\":-1, \"loc\":\"-112.00000000000006 -142\",";
+const generic_json_link_array_header = "],\n  \"linkDataArray\": [\n"
+const generic_json_closing_chars = "]}"
+
 function isPallet(adorn) {
     var node = adorn.adornedPart;
     if (node.diagram instanceof go.Palette) return false;
@@ -122,7 +126,14 @@ function resizeFirewallDown(interface){
     count = firewall.memberParts.count;
     if (count === 1) {
         firewall.setProperties({
-            "placeholder.alignment": go.Spot.BottomLeft
+            "placeholder.alignment": go.Spot.BottomLeft,
+            "SHAPE.desiredSize": new go.Size(100, 100)
+        });
+    }
+    else if(count >1 && count <=3){
+        firewall.layout.startAngle= 45;
+        firewall.setProperties({
+            "SHAPE.desiredSize": new go.Size(100, 100)
         });
     }
     else if(count >3){
@@ -334,4 +345,110 @@ function findIncomingTrafficByID(id){
     while(it.next()){
         if(it.value.data.ID == id) return it.value.data;
     }
+}
+
+function deletingNode(value){
+    var in_interface = value.findLinksInto();
+    var out_interface = value.findLinksOutOf();
+    in_traffics = [];
+    out_traffics = [];
+    var it = in_interface.iterator;
+    while(it.next()){
+        if(it.value.data.category == "TrafegoBloqueio") continue;
+        in_traffics.push(it.value.data);
+    }
+    it = out_interface.iterator;
+    while(it.next()){
+        out_traffics.push(it.value.data);
+    }
+    for(var i=0; i<in_traffics.length; i++){
+        if(value.data.category== "Interface"){
+            deletingIncomingTraffic(in_traffics[i]);
+            continue;
+        }
+        deletingOutgoingTraffic(in_traffics[i]);
+    }
+    for(var i=0; i<out_traffics.length; i++){
+        if(value.data.category== "Interface"){
+            deletingOutgoingTraffic(out_traffics[i]);
+            continue;
+        }
+        deletingIncomingTraffic(out_traffics[i]);
+    }
+}
+
+function deletingHost(value){
+    //faz as alterações necessárias nos tráfegos
+    deletingNode(value);
+    //deleta o host de todas as HostLists que ele estava presente
+    var hosts = myDiagram.findNodesByExample({category: "Hosts"});
+    var it = hosts.iterator;
+    while(it.next()){
+        if( it.value.data["Hosts"].includes(value.data.text)) 
+            it.value.data["Hosts"].splice(it.value.data["Hosts"].indexOf(value.data.text), 1);
+    }
+    //verifica se algum tráfego de bloqueio tinha como destinyEntity esse hosts, se sim, limpa o camp do tráfego de bloqueio
+    var block_traffics = myDiagram.findLinksByExample({category: "TrafegoBloqueio"});
+    it = block_traffics.iterator;
+    while(it.next()){
+        if( it.value.data["Destiny Entity"] == value.data.text) {
+            myDiagram.startTransaction("Empty destiny entity");
+            myDiagram.model.setDataProperty(it.value.data, "Destiny Entity", "");
+            myDiagram.commitTransaction("Empty destiny entity");
+        }
+    }
+}
+
+function setEmptyHostNetmasks(){
+    var hosts = myDiagram.findNodesByExample({category: "Host"});
+    it = hosts.iterator;
+    while(it.next()){
+        if(it.value.data["Netmask"] == ""){
+            it.value.data["Netmask"] = "24";
+        }
+    }
+}
+
+function clearCommentsAndEmptyLines(lines){    
+    lines = lines.split("\n"); 
+    clean = [];   
+    for(var i=0; i<lines.length;i++){        
+        line = lines[i].replace(/\s/g, ''); 
+        //line = lines[i]
+        //console.log(line)
+        if(!line.includes("#") && line != ""){
+            clean.push(lines[i]);
+            //lines.splice(i,1);
+        }            
+    }
+    return clean;
+}
+
+function redefineStructureObjects(){
+    firewall = null;
+    interfaces = null;
+    hosts = null;
+    unknown_networks = null;
+    networks = null;
+    hosts_list = null;
+    incoming_traffics = null;
+    outgoing_traffics = null;
+    block_traffics = null;
+}
+
+function redefineCounters(){
+    host_count = 1;
+    network_count = 1;
+    hosts_count = 1;
+    internet_count = 1;
+    interface_count = 1;
+    incoming_traffic_count = 1;
+    outgoing_traffic_count = 1;
+    block_traffic_count = 1;
+}
+
+function redefineTrafficIDSCounters(){
+    traffic_in_ids=1;
+    traffic_out_ids=1;
+    traffic_blk_ids=1;
 }

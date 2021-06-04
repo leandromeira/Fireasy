@@ -133,9 +133,7 @@ function translateIPs(direction, entity){
     switch (direction){
         case 'Host':
             IP = IP.concat(entity.getIP());
-            if(entity.getIP()!= 'any'){
-                IP = IP.concat("/"+entity.getNetmask());
-            }
+            IP = IP.concat("/"+entity.getNetmask());
             return IP;            
             break;
         case 'Network':
@@ -146,16 +144,7 @@ function translateIPs(direction, entity){
             IP = IP.concat("any");
             return IP; 
             break;
-        case 'Hosts': 
-            hosts_ips = [];
-            for(var i=0;i<entity.getHosts().length;i++){
-                hosts_ips.push(entity.getHosts()[i].getIP());
-            }
-            if(hosts_ips.includes("any")){
-                IP = IP.concat("any");
-                return IP; 
-                break;
-            }           
+        case 'Hosts':      
             IP = IP.concat("{ ");
             for(var i=0;i<entity.getHosts().length;i++){
                 IP = IP.concat(entity.getHosts()[i].getIP()+
@@ -167,9 +156,7 @@ function translateIPs(direction, entity){
             break;
         case 'Interface':
             IP = IP.concat(entity.getIP());
-            if(entity.getIP()!= 'any'){
-                IP = IP.concat("/"+entity.getNetmask());
-            }
+            IP = IP.concat("/"+entity.getNetmask());
             return IP;            
             break;
         default: return;

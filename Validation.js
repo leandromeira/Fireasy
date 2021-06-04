@@ -15,9 +15,19 @@ function validateDeviceName(inputText){
 
 function validateIPaddress(inputText){
     //var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(inputText) || inputText == "any")
+    var valid = false;
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(inputText))
+        valid= true;
+    if(valid == false) return false;
+    node = myDiagram.selection.first();
+    var ip = inputText.split(".");
+    ip = ip[ip.length-1];       
+    if(node.data.category == "Host" || (node.data.category == "Interface")){         
+        if(ip == 0) return false;
         return true;
-    return false;
+    }
+    if(ip != 0) return false;
+    return true;
 }
 
 function validatePort(inputText, type){

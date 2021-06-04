@@ -178,7 +178,7 @@ function onPropertyChangedIP(value){
         var node = myDiagram.selection.first();
         if(node.category == "Host"){
             myDiagram.startTransaction("clear IP");
-            myDiagram.model.setDataProperty(node.data, "IP", "any");
+            myDiagram.model.setDataProperty(node.data, "IP", "");
             myDiagram.commitTransaction("clear IP");
         }
         return;
@@ -194,7 +194,15 @@ function onPropertyChangedIP(value){
 }
 
 function onPropertyChangedNetmask(value){
-    if(value === "") return;
+    if(value === ""){
+        var node = myDiagram.selection.first();
+        if(node.category=="Host"){
+            myDiagram.startTransaction("set netmask");
+            myDiagram.model.setDataProperty(node.data, "Netmask", "24");
+            myDiagram.commitTransaction("set netmask");
+            return;
+        }        
+    } 
     if(!validateNetmask(value) || !validateCommaFreeName(node, value)) {
         alert("You have entered an invalid netmask!");
         var node = myDiagram.selection.first();

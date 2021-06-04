@@ -1,5 +1,8 @@
 Quando excluir 
 
+fazer um for no elementos a serem excluídos:
+    - pra cada elemento, fazer o switch.
+
 Firewall:
     - Tem certeza que deseja excluir o firewall?
     - se sim, deixa a operação acontecer, vão ficar só as entidades externas.
@@ -11,7 +14,7 @@ Interface:
 Host:
     - ver os tráfegos que ele tinha e fazer as operações necessárias
     - verificar se ele participava de uma lista de hosts, se sim, retirar ele da lista.
-    - verificar se algum tráfego de bloqueio tinha como esse host como Destiny Entity, se sim, limpar o camp.
+    - verificar se algum tráfego de bloqueio tinha como esse host como Destiny Entity, se sim, limpar o campo.
 
 Hosts, Network e Internet:
     - ver os tráfegos que ele tinha e fazer as operações necessárias    
@@ -27,4 +30,3 @@ Outgoing Traffic:
 Block Traffic:
     - apenas apagar.
 
-    
