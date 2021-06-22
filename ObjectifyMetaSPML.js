@@ -76,15 +76,15 @@ function createHostsList(lines){
     hosts_list_lines = simplifyLines(lines,"htl(");
     if(hosts_list_lines == null) return;
     hosts_list_array = [];
-    for(i=0;i<hosts_list_lines.length;i++){
+    for(var i=0;i<hosts_list_lines.length;i++){
         hosts_list_attr = hosts_list_lines[i].split(",");
         name = hosts_list_attr[0];
         hosts_list_attr.shift(); //remove o primeiro elemento, o nome
         hosts_inside = [];
-        for(i=0;i<hosts_list_attr.length;i++){
-            for(j=0;j<hosts.length;j++){
-                if(hosts_list_attr[i] == hosts[j].getName()){
-                    hosts_inside.push(hosts[j]);
+        for(var j=0;j<hosts_list_attr.length;j++){
+            for(var k=0;k<hosts.length;k++){
+                if(hosts_list_attr[j] == hosts[k].getName()){
+                    hosts_inside.push(hosts[k]);
                     break;
                 }
             }

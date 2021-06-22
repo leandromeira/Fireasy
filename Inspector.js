@@ -34,7 +34,7 @@ function addInspector(){
                 "From": {show: Inspector.showIfPresent, readOnly: true},
                 "To": {show: Inspector.showIfPresent, readOnly: true},
                 "Hosts": {show: Inspector.showIfPresent, type: "select-multiple", choices: getHosts},
-                "Protocols":  {show: Inspector.showIfPresent, type: "select-multiple", choices: ["TCP","UDP","ICMP"]},
+                "Protocols":  {show: Inspector.showIfPresent, type: "select-multiple", choices: ["tcp","udp","icmp"]},
                 "AF": {show: Inspector.showIfPresent, type: "select", choices: ["inet","inet6"], defaultValue: "inet"},
                 "visible": {show: false},
                 "group" : {show: false}

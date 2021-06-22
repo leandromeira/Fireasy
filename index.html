@@ -23,8 +23,9 @@
     <script src="TranslateMetaSPML.js"></script>
     <script src="ObjectifyMetaSPML.js"></script>
     <script src="TranslateToPacketFilter.js"></script>
-    <script src="ParsePacketFilterToJson.js"></script>
+    <script src="parseObjectsStructureToJson.js"></script>
     <script src="ObjectifyPacketFilter.js"></script>
+    <script src="ObjectsToSPML.js"></script>
     <script src="Estrutura/Firewall.js"></script>
     <script src="Estrutura/Host.js"></script>
     <script src="Estrutura/Hosts.js"></script>
@@ -40,8 +41,8 @@
 <body onload="init()">
 
     <div style="width: 100%; display: flex; justify-content: space-between">
-        <div id="PaletteDiv" style="width: 100px; margin-right: 2px; background-color: #282c34;"></div>
-        <div id="DiagramDiv" style="flex-grow: 1; height: 750px; background-color: white;"></div>
+        <div id="PaletteDiv" style="width: 100px; margin-right: 2px; background-color: #282c34; border-radius: 5px;"></div>
+        <div id="DiagramDiv" style="flex-grow: 1; height: 750px; background-color: white; border-radius: 5px;"></div>
         <span style="display: inline-block; vertical-align: top; padding: 2px; width:300px; ">
             <div id="InspectorDiv" class="inspector"></div>
             <div id="InspectorDivColors" class="inspector"></div>
@@ -64,14 +65,14 @@
     <div id="json">
         <h3>Diagram Model in JSON format:</h3>
         <div>
-            <textarea id="JsonModel" style="width:99%;height:300px"> </textarea>
+            <textarea id="JsonModel" style="width:99%;height:300px;border-radius: 5px;"> </textarea>
         </div>
     </div>
 
     <div id="SPML">
         <h3>Diagram Model in SPML metalanguage:</h3>
         <div>
-            <textarea id="SPMLModel" style="width:99%;height:300px"> </textarea>
+            <textarea id="SPMLModel" style="width:99%;height:300px;border-radius: 5px;"> </textarea>
         </div>
     </div>
     
@@ -79,7 +80,7 @@
     <div id="PacketFilter">
         <h3>Packet-filter rules:</h3>
         <div>
-            <textarea id="Packetfilter-rules" style="width:99%;height:300px"> </textarea>
+            <textarea id="Packetfilter-rules" style="width:99%;height:300px;border-radius: 5px; "> </textarea>
         </div>
     </div>
     

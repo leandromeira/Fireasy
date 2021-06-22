@@ -1,13 +1,15 @@
 var spml;
 
 function translateMetaSPML(json){
-    jsonparsed = JSON.parse(json)
+    var jsonparsed = JSON.parse(json);
     spml = translateFirewall(jsonparsed);
     spml = spml.concat(translateInterfaces(jsonparsed));
-    spml = spml.concat(translateHosts(jsonparsed));
+    
+    spml = spml.concat(translateHosts(jsonparsed));    
     spml = spml.concat(translateInternets(jsonparsed));
-    spml = spml.concat(translateNetworks(jsonparsed));
+    spml = spml.concat(translateNetworks(jsonparsed));    
     spml = spml.concat(translateHostsList(jsonparsed));
+    
     spml = spml.concat(translateIncomingTraffic(jsonparsed));
     spml = spml.concat(translateOutgoingTraffic(jsonparsed));
     spml = spml.concat(translateBlockTraffic(jsonparsed));
@@ -71,16 +73,15 @@ function translateNetworks(json){
 }
 
 function translateHostsList(json){
-    nodearray = json['nodeDataArray'];
-    hostslist = "";
-    for(i=0;i<nodearray.length;i++){
-        if(nodearray[i].category == "Hosts") {
-            hostslist = hostslist.concat("htl("+nodearray[i].text);
-            for(j=0;j<nodearray[i]["Hosts"].length;j++){
-                hostslist = hostslist.concat(","+nodearray[i]["Hosts"][j]);
-            }
-            hostslist = hostslist.concat(")\n");
+    var nodearray = json['nodeDataArray'];
+    var hostslist = "";
+    for(var i=0;i<nodearray.length;i++){
+        if(nodearray[i].category != "Hosts") continue;
+        hostslist = hostslist.concat("htl("+nodearray[i].text);
+        for(var j=0;j<nodearray[i]["Hosts"].length;j++){
+            hostslist = hostslist.concat(","+nodearray[i]["Hosts"][j]);
         }
+        hostslist = hostslist.concat(")\n");
     }
     return hostslist;
 }

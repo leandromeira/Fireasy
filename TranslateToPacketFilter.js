@@ -1,5 +1,6 @@
 var translated_rules = "";
 function TranslateToPacketFilter(){
+    translated_rules = "";
     translateDefaultPolicy();
     translateTrafficsPF();
 
@@ -17,14 +18,20 @@ function translateDefaultPolicy(){
 }
     
 function translateTrafficsPF(){
-    for(var i=0;i<this.incoming_traffics.length;i++){
-        translated_rules = translated_rules.concat(translateIncomingTrafficPF(this.incoming_traffics[i]));
+    if(incoming_traffics){
+        for(var i=0;i<this.incoming_traffics.length;i++){
+            translated_rules = translated_rules.concat(translateIncomingTrafficPF(this.incoming_traffics[i]));
+        }
     }
-    for(var i=0;i<this.outgoing_traffics.length;i++){
-        translated_rules = translated_rules.concat(translateOutgoingTrafficPF(this.outgoing_traffics[i]));
-    }
-    for(var i=0;i<this.block_traffics.length;i++){
-        translated_rules = translated_rules.concat(translateBlockTrafficPF(this.block_traffics[i]));
+    if(outgoing_traffics){
+        for(var i=0;i<this.outgoing_traffics.length;i++){
+            translated_rules = translated_rules.concat(translateOutgoingTrafficPF(this.outgoing_traffics[i]));
+        }
+    }    
+    if(block_traffics){
+        for(var i=0;i<this.block_traffics.length;i++){
+            translated_rules = translated_rules.concat(translateBlockTrafficPF(this.block_traffics[i]));
+        }
     }
 }
 

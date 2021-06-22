@@ -1,32 +1,57 @@
-Quando excluir 
+interface
+	text
+	group
+	Device Name
+	IP
+	Netmask
+	Firewall Name
+	key
 
-fazer um for no elementos a serem excluídos:
-    - pra cada elemento, fazer o switch.
+{"category":"Internet", "text":"Internet",
+ "Fill Color":"#282c34", "Stroke Color":"#00A9C9", "Text Color":"white", "key":-10, "loc":"40 -417"},
 
-Firewall:
-    - Tem certeza que deseja excluir o firewall?
-    - se sim, deixa a operação acontecer, vão ficar só as entidades externas.
+ category
+ text
+ key
 
-Interface:
-    - Tem certeza que deseja excluir a interface?
-    - se sim, os tráfegos serão apagados automaticamente, mas tem que ir de um por um fazer as operações necessárias.
+ {"category":"Host", "text":"adm1", 
+ "Fill Color":"#282c34", "Stroke Color":"#00A9C9", "Text Color":"white",
+  "IP":"192.168.1.1", "Netmask":"24", "key":-11, "loc":"125 247"},
 
-Host:
-    - ver os tráfegos que ele tinha e fazer as operações necessárias
-    - verificar se ele participava de uma lista de hosts, se sim, retirar ele da lista.
-    - verificar se algum tráfego de bloqueio tinha como esse host como Destiny Entity, se sim, limpar o campo.
+  {"category":"Network", "text":"sub", 
+  "Fill Color":"#282c34", "Stroke Color":"#00A9C9", "Text Color":"white", 
+  "Prefix":"192.168.0.0", "Netmask":"16", "key":-12, "loc":"533.5 -188"},
 
-Hosts, Network e Internet:
-    - ver os tráfegos que ele tinha e fazer as operações necessárias    
+  {"category":"Hosts", "text":"Hosts1", 
+  "Fill Color":"#282c34", "Stroke Color":"#00A9C9", "Text Color":"white", 
+  "Hosts":[ "Host1","Host2","Host3" ], "key":-4, "loc":"-211 -363"},
 
-Incoming Traffic:
-    - ver se tem algum tráfego de saída com ele atribuído.
-    - se sim, tirar ele da lista de IncomingTraffics do trafego de saída, e atualizar o text to tráfego de saída.
+  {
+	"category":"TrafegoEntrada", 
+	"text":"7 | admTcpIn", 
+	"from":-11, 
+	"to":-2, 
+	"ID":7, 
+	"Source Port":"*", 
+	"Redirect Port":"", 
+	"Protocols":[ "TCP" ], 
+	"AF":"inet", 
+	"Interface":"ifint", 
+	"External Entity":"adm1", 
+	"ID_out":3
+}
 
-Outgoing Traffic:
-    - ver se tem algum IncomingTraffic no campo dele.
-    - se tiver, percorrer um por um, pegar o incoming traffic e atualizar a variável id_out dele pra null.
-
-Block Traffic:
-    - apenas apagar.
-
+{
+	"category":"TrafegoBloqueio",
+	"text":"1 | Block Incoming 1", 
+	"from":-13, 
+	"to":-2, 
+	"ID":1, 
+	"AF":"inet", 
+	"Interface":"ifint", 
+	"Source Entity":"fin", 
+	"Destiny Entity":"web", 
+	"Source Port":"*", 
+	"Destiny Port":"80", "
+	Protocols":[ "TCP" ]
+	};

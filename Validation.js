@@ -225,7 +225,7 @@ function validateUniqueName(node, value){
             return true;
             break;
         case 'Hosts':
-            hostslist = myDiagram.findNodesByExample({category: "Hosts"});
+            var hostslist = myDiagram.findNodesByExample({category: "Hosts"});
             it = hostslist.iterator;
             count=0;
             while(it.next()){

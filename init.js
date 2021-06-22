@@ -45,8 +45,18 @@ function init() {
         allowLink: false,  // linking is only started via buttons, not modelessly;
         linkingTool: new CustomLinkingTool(),  // defined below to automatically turn on allowLink
         "linkReshapingTool": new CurvedLinkReshapingTool(),
-        "undoManager.isEnabled": true
+        "undoManager.isEnabled": true,
+        layout: $go(go.ForceDirectedLayout, { isInitial: false, isOngoing: false }),
+        "InitialLayoutCompleted": function(e) {
+            // if not all Nodes have real locations, force a layout to happen
+            if (!e.diagram.nodes.all(function(n) { return n.location.isReal(); })) {
+                e.diagram.layoutDiagram(true);
+            }
+        }
     });
+
+    charge = parseFloat(500, 10);
+    myDiagram.layout.defaultElectricalCharge = charge;
 
     defineAdornments();
 
@@ -155,12 +165,10 @@ function Load(){
 
 function Translate() {
     if(document.getElementById("validation").checked) validateAllFields();
-    json = document.getElementById("JsonModel").value
-    spml =  translateMetaSPML(json);
+    var json = document.getElementById("JsonModel").value;
+    var spml =  translateMetaSPML(json);
     document.getElementById("SPMLModel").value = spml;
-    objectifyMetaSPML(spml);
-
-    
+    objectifyMetaSPML(spml);    
 
     myDiagram.isModified = false;
 }
@@ -174,9 +182,11 @@ function LoadRules(){
     var rules = document.getElementById("Packetfilter-rules").value
     rules = clearCommentsAndEmptyLines(rules);
     if(ObjectifyPacketFilter(rules) != null){
-        //document.getElementById("SPMLModel").value = spml;
-        //var json = parsePacketFilterToJson(rules);
-        //document.getElementById("JsonModel").value = json;
+        //mostrar a spml das regras
+        spml = ObjectsToSPML();
+        document.getElementById("SPMLModel").value = spml;
+        var json = parseObjectsStructureToJson();
+        document.getElementById("JsonModel").value = json;
     }
     
     
