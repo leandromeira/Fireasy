@@ -197,6 +197,10 @@ function objectifyIncomingTraffics(lines){
         ext_ent = getExternEntityIncomingTrafficPF(lines[i]);
         src_port = getSourcePortTrafficPF(lines[i]);
         rdr_port = getRedirectPortIncomingTrafficPF(lines[i]);
+        if(rdr_port != ""){ //pega o ip to, que vai ser o ip da interface, e coloca na interface
+            int_ip = getToIP(lines[i]);
+            assignIpInterface(inter,int_ip);
+        }
         proto = getProtocolTrafficPF(lines[i]);
         tfc = new IncomingTraffic(traffic_in_ids, "Incoming Traffic "+incoming_traffic_count, af, inter, ext_ent, src_port, rdr_port, proto);
         if(!IncomingTrafficExists(tfc, traffics)){
@@ -541,4 +545,12 @@ function IncomingTrafficExists(traffic, traffics){
                 return true;
     }
     return false;
+}
+
+function assignIpInterface(inter,int_ip){
+    var ip = int_ip.split("/")[0];
+    var netmask = 24;
+    if(typeof int_ip.split("/")[1] !== "undefined") netmask = int_ip.split("/")[1];
+    inter.setIP(ip);
+    inter.setNetmask(netmask);
 }

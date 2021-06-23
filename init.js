@@ -56,7 +56,7 @@ function init() {
         }
     });
 
-    charge = parseFloat(500, 10);
+    charge = parseFloat(1000, 10);
     myDiagram.layout.defaultElectricalCharge = charge;
 
     defineAdornments();
