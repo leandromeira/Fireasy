@@ -37,23 +37,39 @@ function translateTrafficsPF(){
 
 function translateIncomingTrafficPF(incoming_traffic){
     if(incoming_traffic.getRedirectPort() == ""){
-        outgoing_traffic = findOutTraffic(incoming_traffic);
-        if(typeof outgoing_traffic == "undefined") return "";
-        var traffic = "pass in on "+incoming_traffic.getInterface().getDeviceName()+" "+
-            incoming_traffic.getAf()+" proto { "+incoming_traffic.getProtocols()+" } from ";
-        from = incoming_traffic.getExternEntity().constructor.name;
-        traffic = traffic.concat(translateIPs(from,incoming_traffic.getExternEntity()));
-        if(incoming_traffic.getSourcePort() != "*"){
-            traffic = traffic.concat(" port "+incoming_traffic.getSourcePort());
+
+        //ver quais os outgoing traffics tem esse id, e colocar eles num array
+        out_traffics =[];
+        loop1: for(var i=0; i<outgoing_traffics.length;i++){
+            for(var j=0; j<outgoing_traffics[i].getIncomingTraffics().length;j++){
+                if(outgoing_traffics[i].getIncomingTraffics()[j].getId() == incoming_traffic.getId()){
+                    out_traffics.push(outgoing_traffics[i]);
+                    continue loop1;
+                }
+            }
         }
-        traffic = traffic.concat(" to ");
-        
-        to = outgoing_traffic.getExternEntity().constructor.name;
-        traffic = traffic.concat(translateIPs(to,outgoing_traffic.getExternEntity()));
-        if(outgoing_traffic.getDestPort() != "*"){
-            traffic = traffic.concat(" port "+outgoing_traffic.getDestPort())
-        }
-        traffic = traffic.concat("\n");
+        console.log(out_traffics);
+        var traffic = "";
+        //iterar por eles, e fazer as operações abaixo.
+        for(var i=0; i<out_traffics.length;i++){
+            outgoing_traffic = out_traffics[i];
+            if(typeof outgoing_traffic == "undefined") return "";
+            traffic = traffic.concat("pass in on "+incoming_traffic.getInterface().getDeviceName()+" "+
+                incoming_traffic.getAf()+" proto { "+incoming_traffic.getProtocols()+" } from ");
+            from = incoming_traffic.getExternEntity().constructor.name;
+            traffic = traffic.concat(translateIPs(from,incoming_traffic.getExternEntity()));
+            if(incoming_traffic.getSourcePort() != "*"){
+                traffic = traffic.concat(" port "+incoming_traffic.getSourcePort());
+            }
+            traffic = traffic.concat(" to ");
+            
+            to = outgoing_traffic.getExternEntity().constructor.name;
+            traffic = traffic.concat(translateIPs(to,outgoing_traffic.getExternEntity()));
+            if(outgoing_traffic.getDestPort() != "*"){
+                traffic = traffic.concat(" port "+outgoing_traffic.getDestPort())
+            }
+            traffic = traffic.concat("\n");
+        }        
         return traffic;
     }
 

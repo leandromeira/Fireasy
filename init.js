@@ -10,6 +10,7 @@ var myInspectorColors;
 var accordionJson;
 var accordionSPML;
 var accordionPacketFilter;
+var show_unconnected_entities;
 
 
 //IDs
@@ -119,6 +120,20 @@ function init() {
             active:false
         });
     } );
+
+    /*var checkbox = document.querySelector("input[name=showentities]");
+
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            console.log("Checkbox is checked..");
+        } else {
+            hideUnconnectedEntities();
+        }
+    });
+
+    if(document.getElementById("showentities").checked) show_unconnected_entities = true;
+    else show_unconnected_entities = false;
+    */
 
 }
 

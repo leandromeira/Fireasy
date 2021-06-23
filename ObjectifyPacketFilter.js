@@ -181,6 +181,7 @@ function objectifyHostsList(ips){
         htl.push(htl_temp);
         hosts_count++;
     }
+    //console.log(htl);
     return htl;
 }
 
@@ -204,7 +205,7 @@ function objectifyIncomingTraffics(lines){
             incoming_traffic_count++;
         }        
     }
-    console.log(traffics);
+    //console.log(traffics);
     return traffics;
 }
 
@@ -240,9 +241,14 @@ function objectifyOutgoingTraffics(lines){
         ip = getToIP(out_lines[i]);
         port = getDestinyPortTrafficPF(out_lines[i]);
         //console.log(out_lines[i]);
-        //console.log("ip "+ip);
-        //console.log("proto "+proto);
-        //console.log("port "+port);
+        /*if(port == "80" || port =="443"){
+            console.log(out_lines[i]);
+
+            console.log("int_txt "+int_txt);
+            console.log("ip "+ip);
+            console.log("proto "+proto);
+            console.log("port "+port);
+        }*/
         count_outgoing = 0;
         for(var j=0;j<out_lines.length;j++){
             if(consumed.includes(out_lines[j])) continue;
@@ -255,6 +261,7 @@ function objectifyOutgoingTraffics(lines){
                 consumed.push(out_lines[j]);
             }                                
         }
+        //console.log(consumed);
         count_incoming = count_outgoing;
         in_traffics =[];
         for(var j=0;j<in_lines.length;j++){

@@ -213,6 +213,8 @@ function defineListeners(){
         json = myDiagram.model.toJson();
         document.getElementById("JsonModel").value = json;
 
+        //if(document.getElementById("showhosts") != show_unconnected_hosts)
+
         // iterate over all of the actual ChangedEvents of the Transaction
         txn.changes.each(function(e) {
             // ignore any kind of change other than adding/removing a node

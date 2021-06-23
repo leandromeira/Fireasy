@@ -52,7 +52,7 @@ function trafficIDs(){
     it = intraffic.iterator;
     while(it.next()){
         //MUDAR ESSE "TEXT" PRA NOME FUTURAMENTE
-        if(it.value.data["ID_out"] == outtraffic.data["ID"] || it.value.data["ID_out"] == null)
+        //if(it.value.data["ID_out"] == outtraffic.data["ID"] || it.value.data["ID_out"] == null)
             choices.push(it.value.data["text"]);
     }
     it = rdrtraffics.iterator;
@@ -451,4 +451,18 @@ function redefineTrafficIDSCounters(){
     traffic_in_ids=1;
     traffic_out_ids=1;
     traffic_blk_ids=1;
+}
+
+function hideUnconnectedEntities(){
+    nodes = myDiagram.nodes;
+    it = nodes.iterator;
+    while(it.next()){
+        console.log(it.value.data);
+        if(it.value.data.category == "Firewall" || it.value.data.category == "Interface") continue;
+        from = it.value.findLinksOutOf();
+        to = it.value.findLinksInto();
+        if(from == null && to == null) 
+            myDiagram.model.setDataProperty(it.value.data, "visible", false);
+
+    }
 }
