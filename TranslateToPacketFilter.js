@@ -116,7 +116,7 @@ function translateOutgoingTrafficPF(outgoing_traffic){
             traffic = traffic.concat(" port "+outgoing_traffic.getDestPort())
         }
         if(outgoing_traffic.getNat()!= ""){
-            traffic = traffic.concat(" nat-to ("+outgoing_traffic.getInterface().getDeviceName()+")")
+            traffic = traffic.concat(" nat-to "+outgoing_traffic.getInterface().getIP()+"/"+outgoing_traffic.getInterface().getNetmask())
         }
         traffic = traffic.concat("\n");
     }
