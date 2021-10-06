@@ -47,7 +47,8 @@ function initializeNodeTemplates() {
                 $go(go.Shape, "Square", nodeShapeStyle()),
                 $go(go.TextBlock, textNodeStyle())
             ),
-        ));
+        )
+        );
 
     //INTERFACE TEMPLATE
     myDiagram.nodeTemplateMap.add("Interface",  // the category
@@ -161,6 +162,7 @@ function initializeLinkTemplates() {
             // default corner is 0
             {
                 curve: go.Link.Bezier, reshapable: true,
+                opacity: 1,
                 //routing: go.Link.AvoidsNodes,
                 //corner: 10 ,
                // toShortLength: 0,
@@ -169,6 +171,7 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
+            new go.Binding("opacity", "opacity").makeTwoWay(),
             $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -227,6 +230,7 @@ function initializeLinkTemplates() {
             // default corner is 0
             {
                 curve: go.Link.Bezier, reshapable: true,
+                opacity: 1,
                 //routing: go.Link.AvoidsNodes,
                 //corner: 10 ,
                 //toShortLength: 0,
@@ -235,6 +239,7 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
+            new go.Binding("opacity", "opacity").makeTwoWay(),
             $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -296,6 +301,7 @@ function initializeLinkTemplates() {
             // default corner is 0
             {
                 curve: go.Link.Bezier, reshapable: true,
+                opacity: 1,
                 //routing: go.Link.AvoidsNodes,
                 //corner: 10 ,
                 //toShortLength: 0,
@@ -304,6 +310,7 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
+            new go.Binding("opacity", "opacity").makeTwoWay(),
             $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -365,6 +372,7 @@ function initializeLinkTemplates() {
             // default corner is 0
             {
                 curve: go.Link.Bezier, reshapable: true,
+                opacity: 1,
                 //routing: go.Link.AvoidsNodes,
                 //corner: 10 ,
                 //toShortLength: 0,
@@ -373,6 +381,7 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
+            new go.Binding("opacity", "opacity").makeTwoWay(),
             $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -432,6 +441,7 @@ function initializeLinkTemplates() {
             // default corner is 0
             {
                 curve: go.Link.Bezier, reshapable: true,
+                opacity: 1,
                 //routing: go.Link.AvoidsNodes,
                 //corner: 10 ,
                 //toShortLength: 0,
@@ -440,6 +450,7 @@ function initializeLinkTemplates() {
                 mouseLeave: function(e, link) { link.elt(0).stroke = "transparent"; }
             },
             new go.Binding("curviness", "curviness").makeTwoWay(),
+            new go.Binding("opacity", "opacity").makeTwoWay(),
             $go(go.Shape, {
                 isPanelMain: true,
                 stroke: "transparent",
@@ -536,6 +547,7 @@ function nodeStyle() {
         // If the Node.location is changed, it updates the "loc" property of the node data,
         // converting back using the Point.stringify static method.
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding("opacity", "opacity").makeTwoWay(),
         {
             // the Node.location is at the center of each node
             locationSpot: go.Spot.Center,

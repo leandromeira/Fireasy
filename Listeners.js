@@ -1,5 +1,12 @@
 function defineListeners(){
 
+    var checkboxincoming = document.querySelector("input[name=showincoming]");
+    var checkboxredirect = document.querySelector("input[name=showredirect]");
+    var checkboxblock = document.querySelector("input[name=showblock]");
+    var checkboxoutgoing = document.querySelector("input[name=showoutgoing]");
+    var checkboxnat = document.querySelector("input[name=shownat]");
+    var checkUconnectedNodes = document.querySelector("input[name=showUnconnectedNodes]");
+
     myDiagram.addDiagramListener("ExternalObjectsDropped", function (e) {
         // stop any ongoing text editing
         if (myDiagram.currentTool instanceof go.TextEditingTool) {
@@ -229,4 +236,135 @@ function defineListeners(){
             }
         });
     });
+
+    
+    checkboxincoming.addEventListener('change', function() {
+        if (this.checked) {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoEntrada"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 1);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        } else {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoEntrada"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 0.0);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        }
+        });
+
+    checkboxredirect.addEventListener('change', function() {
+        if (this.checked) {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoRedirecionamento"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 1);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        } else {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoRedirecionamento"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 0.0);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        }
+    });
+
+    
+    checkboxblock.addEventListener('change', function() {
+        if (this.checked) {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoBloqueio"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 1);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        } else {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoBloqueio"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 0.0);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        }
+    });
+
+    
+    checkboxoutgoing.addEventListener('change', function() {
+        if (this.checked) {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoSaida"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 1);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        } else {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoSaida"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 0.0);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        }
+    });
+
+        
+    checkboxnat.addEventListener('change', function() {
+        if (this.checked) {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoTraducao"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 1);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        } else {
+            var incoming_diagram = myDiagram.findLinksByExample({category: "TrafegoTraducao"});
+            it = incoming_diagram.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change traffic visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 0.0);
+                myDiagram.commitTransaction("Change traffic visible");
+            }
+        }
+    });
+
+        
+    checkUconnectedNodes.addEventListener('change', function() {
+        if (this.checked) {
+            var nodes = myDiagram.nodes;
+            it = nodes.iterator;
+            while(it.next()){
+                myDiagram.startTransaction("Change nodes visible");
+                myDiagram.model.setDataProperty(it.value.data, "opacity", 1); 
+                myDiagram.commitTransaction("Change nodes visible");
+            }
+        } else {
+            var nodes = myDiagram.nodes;
+            it = nodes.iterator;
+            while(it.next()){
+                if(it.value.category == "Firewall" || it.value.category == "Interface") continue;
+                myDiagram.startTransaction("Change nodes visible");
+                links =  it.value.findLinksConnected();
+                console.log(links.count);
+                if(links.count == 0){
+                    myDiagram.model.setDataProperty(it.value.data, "opacity", 0.0);
+                }
+                myDiagram.commitTransaction("Change nodes visible");
+            }
+        }
+    });
+
 }

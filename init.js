@@ -121,19 +121,6 @@ function init() {
         });
     } );
 
-    /*var checkbox = document.querySelector("input[name=showentities]");
-
-    checkbox.addEventListener('change', function() {
-        if (this.checked) {
-            console.log("Checkbox is checked..");
-        } else {
-            hideUnconnectedEntities();
-        }
-    });
-
-    if(document.getElementById("showentities").checked) show_unconnected_entities = true;
-    else show_unconnected_entities = false;
-    */
 
 }
 
@@ -161,7 +148,14 @@ CustomLinkingTool.prototype.doStop = function() {
 };
 // end CustomLinkingTool
 
+
+
 function Load(){
+    passwd = document.getElementById("password").value;
+    if(passwd != "321stiOK") {
+        alert("Incorrect password.");
+        return;
+    }
     //json = myDiagram.model.toJson();
     json = document.getElementById("JsonModel").value;
     myDiagram.model = go.Model.fromJson(json);
@@ -179,7 +173,14 @@ function Load(){
 }
 
 function Translate() {
-    if(document.getElementById("validation").checked) validateAllFields();
+    passwd = document.getElementById("password").value;
+    if(passwd != "321stiOK") {
+        alert("Incorrect password.");
+        return;
+    }
+    //if(document.getElementById("validation").checked) {
+        validateAllFields();
+    //}
     var json = document.getElementById("JsonModel").value;
     var spml =  translateMetaSPML(json);
     document.getElementById("SPMLModel").value = spml;
@@ -189,12 +190,22 @@ function Translate() {
 }
 
 function TranslatePacketFilter(){
+    passwd = document.getElementById("password").value;
+    if(passwd != "321stiOK") {
+        alert("Incorrect password.");
+        return;
+    }
     var rules = TranslateToPacketFilter();
     document.getElementById("Packetfilter-rules").value = rules;
 }
 
 function LoadRules(){
-    var rules = document.getElementById("Packetfilter-rules").value
+    passwd = document.getElementById("password").value;
+    if(passwd != "321stiOK") {
+        alert("Incorrect password.");
+        return;
+    }
+    var rules = document.getElementById("Packetfilter-rules").value;
     rules = clearCommentsAndEmptyLines(rules);
     if(ObjectifyPacketFilter(rules) != null){
         //mostrar a spml das regras
@@ -203,6 +214,6 @@ function LoadRules(){
         var json = parseObjectsStructureToJson();
         document.getElementById("JsonModel").value = json;
     }
-    
-    
+    Load();
+        
 }
