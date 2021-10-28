@@ -1,3 +1,5 @@
+
+
 var translated_rules = "";
 function TranslateToPacketFilter(){
     translated_rules = "";
@@ -48,7 +50,7 @@ function translateIncomingTrafficPF(incoming_traffic){
                 }
             }
         }
-        console.log(out_traffics);
+        //console.log(out_traffics);
         var traffic = "";
         //iterar por eles, e fazer as operações abaixo.
         for(var i=0; i<out_traffics.length;i++){

@@ -158,6 +158,7 @@ function Load(){
     }
     //json = myDiagram.model.toJson();
     json = document.getElementById("JsonModel").value;
+    //console.log(json);
     myDiagram.model = go.Model.fromJson(json);
     updateAllCounters();
     setEmptyHostNetmasks();
@@ -191,17 +192,27 @@ function Translate() {
 
 function TranslatePacketFilter(){
     passwd = document.getElementById("password").value;
-    if(passwd != "321stiOK") {
+    if(passwd != pass) {
         alert("Incorrect password.");
         return;
     }
+    //valida campos
+    validateAllFields();
+
+    var json = document.getElementById("JsonModel").value;
+    var spml =  translateMetaSPML(json);
+    document.getElementById("SPMLModel").value = spml;
+    objectifyMetaSPML(spml);    
+
+    myDiagram.isModified = false;
+
     var rules = TranslateToPacketFilter();
     document.getElementById("Packetfilter-rules").value = rules;
 }
 
 function LoadRules(){
     passwd = document.getElementById("password").value;
-    if(passwd != "321stiOK") {
+    if(passwd != pass) {
         alert("Incorrect password.");
         return;
     }
@@ -217,3 +228,5 @@ function LoadRules(){
     Load();
         
 }
+
+const pass = "321stiOK"
