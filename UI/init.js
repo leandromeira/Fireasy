@@ -152,7 +152,7 @@ CustomLinkingTool.prototype.doStop = function() {
 
 function Load(){
     passwd = document.getElementById("password").value;
-    if(passwd != "321stiOK") {
+    if(passwd != pass) {
         alert("Incorrect password.");
         return;
     }
@@ -171,23 +171,6 @@ function Load(){
         firewall_pallet = firewall_pallet.iterator.first();
         myPallet.model.setDataProperty(firewall_pallet,"visible",false);
     }   
-}
-
-function Translate() {
-    passwd = document.getElementById("password").value;
-    if(passwd != "321stiOK") {
-        alert("Incorrect password.");
-        return;
-    }
-    //if(document.getElementById("validation").checked) {
-        validateAllFields();
-    //}
-    var json = document.getElementById("JsonModel").value;
-    var spml =  translateMetaSPML(json);
-    document.getElementById("SPMLModel").value = spml;
-    objectifyMetaSPML(spml);    
-
-    myDiagram.isModified = false;
 }
 
 function TranslatePacketFilter(){
@@ -229,4 +212,4 @@ function LoadRules(){
         
 }
 
-const pass = "321stiOK"
+const pass = "123Fireasy"
