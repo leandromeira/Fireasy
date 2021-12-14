@@ -181,7 +181,8 @@ function initializeLinkTemplates() {
             $go(go.Shape, {
                     isPanelMain: true,
                     strokeWidth: 3,
-                    stroke: "black"
+                    stroke: "black",
+                    name: "PIPE"
                 },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
@@ -249,7 +250,8 @@ function initializeLinkTemplates() {
             $go(go.Shape, {
                 isPanelMain: true,
                 strokeWidth: 3,
-                stroke: "blue"
+                stroke: "blue",
+                name: "PIPE"
             },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
@@ -392,7 +394,8 @@ function initializeLinkTemplates() {
                 isPanelMain: true,
                 strokeDashArray: [5,5],
                 strokeWidth: 3,
-                stroke: "black"
+                stroke: "black",
+                name: "PIPE"
             },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:
@@ -462,7 +465,8 @@ function initializeLinkTemplates() {
                     isPanelMain: true,
                     strokeDashArray: [5,5],
                     strokeWidth: 3,
-                    stroke: "blue"
+                    stroke: "blue",
+                    name: "PIPE"
                 },
                 new go.Binding("stroke", "color")),
             // if we wanted an arrowhead we would also add another Shape with toArrow defined:

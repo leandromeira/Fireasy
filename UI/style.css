@@ -9,3 +9,19 @@ button{
     margin-right: 15px;
 }
 
+.labelFiltro {
+    display: block;
+    flex-direction: row;
+    justify-content: left;
+    text-align: justify;
+    /*width: 400px;*/
+    line-height: 26px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+  
+  .inputFiltro {
+    height: 20px;
+    
+    margin-left: 5px;
+  }

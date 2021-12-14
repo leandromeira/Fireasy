@@ -1,109 +1,272 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Fireasy</title>
-    <script src="gojs/go-debug.js"></script>
-    <link rel='stylesheet' href='gojs/extensions/DataInspector.css' />
-    <link rel="stylesheet" href="Libraries/jquery-ui.css">
-    <link rel='stylesheet' href='UI/style.css' />
-    <script src="gojs/extensions/DataInspector.js"></script>
-    <script src="gojs/extensions/ParallelRouteLink.js"></script>
-    <script src="gojs/extensions/CurvedLinkReshapingTool.js"></script>
-    <script src="Libraries/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="UI/init.js"></script>
-    <script src="UI/Shapes.js"></script>
-    <script src="UI/Templates.js"></script>
-    <script src="UI/Adornments.js"></script>
-    <script src="UI/Pallet.js"></script>
-    <script src="UI/Inspector.js"></script>
-    <script src="Utils/Utils.js"></script>
-    <script src="UI/Listeners.js"></script>
-    <script src="Utils/Validation.js"></script>
-    <script src="SPML/TranslateMetaSPML.js"></script>
-    <script src="SPML/ObjectifyMetaSPML.js"></script>
-    <script src="PacketFilter/TranslateToPacketFilter.js"></script>
-    <script src="SPML/parseObjectsStructureToJson.js"></script>
-    <script src="PacketFilter/ObjectifyPacketFilter.js"></script>
-    <script src="SPML/ObjectsToSPML.js"></script>
-    <script src="Estrutura/Firewall.js"></script>
-    <script src="Estrutura/Host.js"></script>
-    <script src="Estrutura/Hosts.js"></script>
-    <script src="Estrutura/Network.js"></script>
-    <script src="Estrutura/Interface.js"></script>
-    <script src="Estrutura/UnknownNetwork.js"></script>
-    <script src="Estrutura/IncomingTraffic.js"></script>
-    <script src="Estrutura/OutgoingTraffic.js"></script>
-    <script src="Estrutura/BlockTraffic.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Fireasy</title>
+        <script src="gojs/go-debug.js"></script>
+        <link rel="stylesheet" href="gojs/extensions/DataInspector.css" />
+        <link rel="stylesheet" href="Libraries/jquery-ui.css" />
+        <link rel="stylesheet" href="UI/style.css" />
+        <script src="gojs/extensions/DataInspector.js"></script>
+        <script src="gojs/extensions/ParallelRouteLink.js"></script>
+        <script src="gojs/extensions/CurvedLinkReshapingTool.js"></script>
+        <script src="Libraries/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="UI/init.js"></script>
+        <script src="UI/Shapes.js"></script>
+        <script src="UI/Templates.js"></script>
+        <script src="UI/Adornments.js"></script>
+        <script src="UI/Pallet.js"></script>
+        <script src="UI/Inspector.js"></script>
+        <script src="UI/Filters.js"></script>
+        <script src="Utils/Utils.js"></script>
+        <script src="UI/Listeners.js"></script>
+        <script src="Utils/Validation.js"></script>
+        <script src="SPML/TranslateMetaSPML.js"></script>
+        <script src="SPML/ObjectifyMetaSPML.js"></script>
+        <script src="PacketFilter/TranslateToPacketFilter.js"></script>
+        <script src="SPML/parseObjectsStructureToJson.js"></script>
+        <script src="PacketFilter/ObjectifyPacketFilter.js"></script>
+        <script src="SPML/ObjectsToSPML.js"></script>
+        <script src="Estrutura/Firewall.js"></script>
+        <script src="Estrutura/Host.js"></script>
+        <script src="Estrutura/Hosts.js"></script>
+        <script src="Estrutura/Network.js"></script>
+        <script src="Estrutura/Interface.js"></script>
+        <script src="Estrutura/UnknownNetwork.js"></script>
+        <script src="Estrutura/IncomingTraffic.js"></script>
+        <script src="Estrutura/OutgoingTraffic.js"></script>
+        <script src="Estrutura/BlockTraffic.js"></script>
+    </head>
+    <body onload="init()">
+        <div
+            style="
+                width: 100%;
+                height: 60px;
+                display: flex;
+                background-color: #282c34;
+                justify-content: space-between;
+                border-radius: 5px;
+                margin-bottom: 5px;
+            "
+        >
+            <div
+                id="HeaderDiv"
+                style="
+                    width: 100%;
+                    margin-right: 2px;
+                    border-radius: 5px;
+                    margin: 18px;
+                "
+            >
+                <!-- <input type="checkbox" id="validation" name="validation" > -->
+                <!-- <label for="validation">Validation</label> -->
+                <input
+                    type="checkbox"
+                    id="showincoming"
+                    name="showincoming"
+                    checked
+                />
+                <label for="showincoming">Show Incoming Traffics</label>
+                <input
+                    type="checkbox"
+                    id="showredirect"
+                    name="showredirect"
+                    checked
+                />
+                <label for="showredirect">Show Redirect Traffics</label>
+                <input
+                    type="checkbox"
+                    id="showblock"
+                    name="showblock"
+                    checked
+                />
+                <label for="showblock">Show Block Traffics</label>
+                <input
+                    type="checkbox"
+                    id="showoutgoing"
+                    name="showoutgoing"
+                    checked
+                />
+                <label for="showoutgoing">Show Outgoing Traffics</label>
+                <input type="checkbox" id="shownat" name="shownat" checked />
+                <label for="shownat">Show NAT Traffics</label>
+                <input
+                    type="checkbox"
+                    id="showUnconnectedNodes"
+                    name="showUnconnectedNodes"
+                    checked
+                />
+                <label for="showUnconnectedNodes">Show Unconnected Nodes</label>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: space-between">
+            <div
+                id="PaletteDiv"
+                style="
+                    width: 100px;
+                    margin-right: 2px;
+                    background-color: #282c34;
+                    border-radius: 5px;
+                "
+            ></div>
+            <div
+                id="DiagramDiv"
+                style="
+                    flex-grow: 1;
+                    height: 750px;
+                    background-color: white;
+                    border-radius: 5px;
+                "
+            ></div>
+            <span
+                style="
+                    display: inline-block;
+                    vertical-align: top;
+                    padding: 2px;
+                    width: 300px;
+                "
+            >
+                <div id="InspectorDiv" class="inspector"></div>
+                <div id="InspectorDivColors" class="inspector"></div>
+                <div
+                    id="Filters"
+                    class="filters"
+                    style="
+                        width: 100%;
+                        margin: 2px 2px 2px 2px;
+                        background-color: #282c34;
+                        border-radius: 5px;
+                    "
+                >
+                    <h2
+                        style="
+                            text-align: center;
+                            margin-top: 5px;
+                            color: white;
+                            font-family: Arial, Helvetica, sans-serif;
+                        "
+                    >
+                        Filters
+                    </h2>
+                    <div style=" margin: 0 10px 10px 10px; border:2px solid white;">
+                        <label class="labelFiltro" style="margin-top: 10px;">
+                            IP
+                            <input
+                                class="inputFiltro"
+                                type="text"
+                                id="ipFiltro"
+                                size="11"
+                            />
+                            <input type="checkbox" id="ipFiltroAny" />
+                            <label for="ipFiltroAny">any</label>
+                        </label>
+                        <label style="margin-left: 10px;">Or</label>
+                        <label class="labelFiltro">
+                            Name
+                            <input
+                                class="inputFiltro"
+                                type="text"
+                                id="nameFiltro"
+                                size="11"
+                            />
+                            <input type="checkbox" id="nameFiltroAny" />
+                            <label for="nameFiltroAny">any</label>
+                        </label>
+                    </div>                    
 
-
-</head>
-<body onload="init()">
-
-    <div style="width: 100%; height: 60px; display: flex; background-color: #282c34; justify-content: space-between; border-radius: 5px; margin-bottom: 5px;">
-        <div id="HeaderDiv" style="width: 100%;margin-right: 2px; ; border-radius: 5px; margin: 18px;">
-           <!-- <input type="checkbox" id="validation" name="validation" > -->
-               <!-- <label for="validation">Validation</label> -->
-            <input type="checkbox" id="showincoming" name="showincoming" checked >
-                <label for="showincoming" >Show Incoming Traffics</label>
-            <input type="checkbox" id="showredirect" name="showredirect" checked >
-                <label for="showredirect" >Show Redirect Traffics</label>
-            <input type="checkbox" id="showblock" name="showblock" checked >
-                <label for="showblock" >Show Block Traffics</label>
-            <input type="checkbox" id="showoutgoing" name="showoutgoing" checked >
-                <label for="showoutgoing" >Show Outgoing Traffics</label>
-            <input type="checkbox" id="shownat" name="shownat" checked >
-                <label for="shownat" >Show NAT Traffics</label>
-            <input type="checkbox" id="showUnconnectedNodes" name="showUnconnectedNodes" checked >
-                <label for="showUnconnectedNodes" >Show Unconnected Nodes</label>
+                    <label class="labelFiltro">
+                        Port
+                        <input
+                            class="inputFiltro"
+                            type="text"
+                            id="portFiltro"
+                            size="5"
+                            maxlength="5"
+                        />
+                        <input type="checkbox" id="portFiltroAny" />
+                        <label for="portFiltroAny">any</label>
+                    </label>
+                    <input
+                        type="checkbox"
+                        id="hideTrafficsFilter"
+                        name="hideTrafficsFilter"
+                        style="margin-left: 10px; margin-bottom: 10px;;"
+                    />
+                    <label for="hideTrafficsFilter">Hide other Traffics</label>
+                    <br/>
+                    <input
+                        type="checkbox"
+                        id="hideNodesFilter"
+                        name="hideNodesFilter"
+                        style="margin-left: 10px;"
+                    />
+                    <label for="hideNodesFilter">Hide other Nodes</label>
+                    <div style="margin-left: 15px; margin-bottom: 10px; margin-top:10px;">
+                        <button
+                            id="Filtrar"
+                            onclick="filter()"
+                            style="margin-bottom: 10px"
+                        >
+                            Filter
+                        </button>
+                        <button id="PararAnimacao" onclick="pararAnimacao()">
+                            Stop animation
+                        </button>
+                    </div>
+                </div>
+            </span>
         </div>
 
-    </div>
-    <div style="width: 100%; display: flex; justify-content: space-between">
-        <div id="PaletteDiv" style="width: 100px; margin-right: 2px; background-color: #282c34; border-radius: 5px;"></div>
-        <div id="DiagramDiv" style="flex-grow: 1; height: 750px; background-color: white; border-radius: 5px;"></div>
-        <span style="display: inline-block; vertical-align: top; padding: 2px; width:300px; ">
-            <div id="InspectorDiv" class="inspector"></div>
-            <div id="InspectorDivColors" class="inspector"></div>
-        </span>
-    </div>
+        <br />
+        <button id="Load Example" onclick="Load()">Load from Json</button>
+        <button id="Load Packet Filter" onclick="LoadRules()">
+            Load from Packet Filter Rules
+        </button>
+        <div style="display: inline-block; padding-right: 100px"></div>
+        <!--<button id="translate" onclick="Translate()">Translate to SPML2</button>    -->
+        <button id="Packet Filter" onclick="TranslatePacketFilter()">
+            Translate to Packet Filter
+        </button>
+        <br /><br />
 
-    <br/>
-    <button id="Load Example" onclick="Load()">Load from Json</button>
-    <button id="Load Packet Filter" onclick="LoadRules()">Load from Packet Filter Rules</button>
-    <div style="display: inline-block; padding-right: 100px" ></div>
-    <!--<button id="translate" onclick="Translate()">Translate to SPML2</button>    -->
-    <button id="Packet Filter" onclick="TranslatePacketFilter()">Translate to Packet Filter</button>
-    <br/><br/>
-
-    <div id="json">
-        <h3>Diagram Model in JSON format:</h3>
-        <div>
-            <textarea id="JsonModel" style="width:99%;height:300px;border-radius: 5px;"> </textarea>
+        <div id="json">
+            <h3>Diagram Model in JSON format:</h3>
+            <div>
+                <textarea
+                    id="JsonModel"
+                    style="width: 99%; height: 300px; border-radius: 5px"
+                >
+                </textarea>
+            </div>
         </div>
-    </div>
 
-    <div id="SPML">
-        <h3>Diagram Model in SPML metalanguage:</h3>
-        <div>
-            <textarea id="SPMLModel" style="width:99%;height:300px;border-radius: 5px;"> </textarea>
+        <div id="SPML">
+            <h3>Diagram Model in SPML metalanguage:</h3>
+            <div>
+                <textarea
+                    id="SPMLModel"
+                    style="width: 99%; height: 300px; border-radius: 5px"
+                >
+                </textarea>
+            </div>
         </div>
-    </div>
-    
 
-    <div id="PacketFilter">
-        <h3>Packet-filter rules:</h3>
-        <div>
-            <textarea id="Packetfilter-rules" style="width:99%;height:300px;border-radius: 5px; "> </textarea>
+        <div id="PacketFilter">
+            <h3>Packet-filter rules:</h3>
+            <div>
+                <textarea
+                    id="Packetfilter-rules"
+                    style="width: 99%; height: 300px; border-radius: 5px"
+                >
+                </textarea>
+            </div>
         </div>
-    </div>
 
-
-    <br/>
-    <h3>Enter the master password to activate load and translate functions:
-    <input id="password" type="password" size="25" /> </h3>
-
-
-</body>
+        <br />
+        <h3>
+            Enter the master password to activate load and translate functions:
+            <input id="password" type="password" size="25" />
+        </h3>
+    </body>
 </html>
