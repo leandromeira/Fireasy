@@ -194,29 +194,15 @@ function Load() {
         myPallet.model.setDataProperty(firewall_pallet, "visible", false);
     }
 
-        /*
-        var animation = new go.Animation();
-        animation.easing = go.Animation.EaseOutQuad;
-        animation.duration = 1000;
-        myDiagram.links.each(function (link) {
-            if (link.category == "TrafegoEntrada") {
-                animation.add(link.findObject("PIPE"), "opacity", 0, 1);
-                animation.add(link.findObject("PIPE"), "strokeWidth", 10, 2);
-                animation.add(link.findObject("PIPE"), "strokeDashOffset", 20, 0);
-            }
-        });
-        // Run indefinitely
-        animation.runCount = Infinity;
-        animation.start();
-        */
 }
 
 function TranslatePacketFilter() {
+    /*
     passwd = document.getElementById("password").value;
     if (passwd != pass) {
         alert("Incorrect password.");
         return;
-    }
+    }*/
     //valida campos
     validateAllFields();
 
@@ -232,11 +218,12 @@ function TranslatePacketFilter() {
 }
 
 function LoadRules() {
+    /*
     passwd = document.getElementById("password").value;
     if (passwd != pass) {
         alert("Incorrect password.");
         return;
-    }
+    }*/
     var rules = document.getElementById("Packetfilter-rules").value;
     rules = clearCommentsAndEmptyLines(rules);
     if (ObjectifyPacketFilter(rules) != null) {
